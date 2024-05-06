@@ -34,7 +34,7 @@ jobs:
 
   Repository_Mirroring:
     runs-on: ubuntu-latest
-    needs: check_program_compilation
+    needs: run_tests
     steps:
       - uses: actions/checkout@v3
         with:
