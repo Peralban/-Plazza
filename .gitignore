@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+
+# Vscode settings
+.vscode/
+
+# Clion settings
+.idea/
+
+# Executable files
+plazza
