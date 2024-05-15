@@ -5,7 +5,7 @@
 ** DESCRIPTION
 */
 
-#include "../Include/TestsInclude.hpp"
+#include "../include/testsInclude.hpp"
 
 Test(check_args, test1)
 {
