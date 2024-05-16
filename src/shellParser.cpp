@@ -46,8 +46,6 @@ Shell::Token Shell::Parser::Lexer::parseType()
     return {Token::TYPE, type};
 }
 
-std::string sizes[] = {"S", "M", "L", "XL", "XXL"};
-
 Shell::Token Shell::Parser::Lexer::parseSize()
 {
     std::string size;

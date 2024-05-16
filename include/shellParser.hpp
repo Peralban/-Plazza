@@ -16,6 +16,8 @@
 
 namespace Shell {
 
+    static const std::string sizes[] = {"S", "M", "L", "XL", "XXL"};
+
     class Token {
     public:
         enum Type {
