@@ -17,12 +17,14 @@
 namespace Shell {
 
     /**
-     * The sizes of the pizzas.
+     * @brief Array of valid sizes.
+     * The sizes are represented as strings.
      */
     static const std::string sizes[] = {"S", "M", "L", "XL", "XXL"};
 
     /**
-     * The Token class.
+     * @class Token
+     * @brief This class represents a token.
      * It contains the type of the token and its value.
      * The type is a bitfield.
      * The value is a string.
