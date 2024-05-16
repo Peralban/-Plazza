@@ -86,7 +86,7 @@ namespace Shell {
          *
          * This function returns the type of the token.
          */
-        [[ nodiscard]] Type getType() const { return _type; }
+        [[ nodiscard ]] Type getType() const { return _type; }
 
         /**
          * @brief Getter for the value of the token.
@@ -94,7 +94,7 @@ namespace Shell {
          *
          * This function returns the value of the token.
          */
-        [[ nodiscard]] std::string getValue() const { return _value; }
+        [[ nodiscard ]] std::string getValue() const { return _value; }
 
     private:
         Type _type;
