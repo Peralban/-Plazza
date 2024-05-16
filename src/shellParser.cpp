@@ -7,13 +7,7 @@
 
 #include "shellParser.hpp"
 
-Shell::Parser::Parser(std::string input)
-{
-    _lexer = Lexer(std::move(input));
-    current_token = Token();
-}
-
-Shell::Token Shell::Parser::Lexer::getNextToken()
+Shell::Token Shell::Parser::getNextToken()
 {
     if (!is_eof()) {
         if (is_space()) {
@@ -30,13 +24,13 @@ Shell::Token Shell::Parser::Lexer::getNextToken()
     return {Token::END, ""};
 }
 
-void Shell::Parser::Lexer::skip_whitespace()
+void Shell::Parser::skip_whitespace()
 {
     while (!is_eof() && is_space())
         _pos++;
 }
 
-Shell::Token Shell::Parser::Lexer::parseType()
+Shell::Token Shell::Parser::parseType()
 {
     std::string type;
     while (!is_eof() && isalpha(_input[_pos])) {
@@ -46,7 +40,7 @@ Shell::Token Shell::Parser::Lexer::parseType()
     return {Token::TYPE, type};
 }
 
-Shell::Token Shell::Parser::Lexer::parseSize()
+Shell::Token Shell::Parser::parseSize()
 {
     std::string size;
 
@@ -60,7 +54,7 @@ Shell::Token Shell::Parser::Lexer::parseSize()
     return {Token::INVALID, ""};
 }
 
-Shell::Token Shell::Parser::Lexer::parseNumber()
+Shell::Token Shell::Parser::parseNumber()
 {
     std::string number;
     if (_input[_pos] == 'x') {
@@ -75,7 +69,7 @@ Shell::Token Shell::Parser::Lexer::parseNumber()
     return {Token::INVALID, ""};
 }
 
-Shell::Token Shell::Parser::Lexer::parseSemicolon()
+Shell::Token Shell::Parser::parseSemicolon()
 {
     if (_input[_pos] == ';') {
         _pos++;
@@ -86,7 +80,7 @@ Shell::Token Shell::Parser::Lexer::parseSemicolon()
 
 void Shell::Parser::eat(Token::Type token_type)
 {
-    current_token = _lexer.getNextToken();
+    current_token = getNextToken();
     if ((current_token.getType() & token_type) != 0)
         return;
     else

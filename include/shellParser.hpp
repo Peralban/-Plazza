@@ -123,7 +123,7 @@ namespace Shell {
          * @brief Constructor for the Parser class.
          * @param input The string to be parsed.
          */
-        explicit Parser(std::string input);
+        explicit Parser(std::string input) : current_token(Token()), _input(std::move(input)), _pos(0) {}
 
         /**
          * @brief Consumes the current token if its type matches the given token type.
@@ -146,47 +146,22 @@ namespace Shell {
             explicit InvalidToken(const std::string &message) : std::runtime_error(message) {}
         };
 
-        /**
-         * @class Lexer
-         * @brief This class is responsible for tokenizing the input string.
-         */
-        class Lexer {
-        public:
-            /**
-             * @brief Default constructor for the Lexer class.
-             */
-            Lexer() : _input(), _pos(0) {}
-
-            /**
-             * @brief Constructor for the Lexer class.
-             * @param input The string to be tokenized.
-             */
-            explicit Lexer(std::string input) : _input(std::move(input)), _pos(0) {}
-
-            /**
-             * @brief Returns the next token from the input string.
-             * @return The next token.
-             */
-            Token getNextToken();
-
-        private:
-            std::string _input;
-            size_t _pos{};
-
-            [[ nodiscard ]] bool is_space() const { return _input[_pos] == ' ' || _input[_pos] == '\n' || _input[_pos] == '\t'; }
-            [[ nodiscard ]] bool is_eof() const { return _pos >= _input.size(); }
-
-            void skip_whitespace();
-
-            Token parseSemicolon();
-            Token parseType();
-            Token parseSize();
-            Token parseNumber();
-            std::vector<Token (Lexer::*)()> _parsers = {&Lexer::parseSemicolon, &Lexer::parseSize, &Lexer::parseNumber, &Lexer::parseType};
-        };
-
     private:
-        Lexer _lexer;
+        std::string _input;
+        size_t _pos;
+
+        Token getNextToken();
+
+        [[ nodiscard ]] bool is_space() const { return _input[_pos] == ' ' || _input[_pos] == '\n' || _input[_pos] == '\t'; }
+        [[ nodiscard ]] bool is_eof() const { return _pos >= _input.size(); }
+
+        void skip_whitespace();
+
+        Token parseSemicolon();
+        Token parseType();
+        Token parseSize();
+        Token parseNumber();
+        std::vector<Token (Parser::*)()> _parsers = {&Parser::parseSemicolon, &Parser::parseSize, &Parser::parseNumber, &Parser::parseType};
     };
 
     /**
