@@ -7,13 +7,13 @@
 
 #include "shellParser.hpp"
 
-Parser::Parser(std::string input)
+Shell::Parser::Parser(std::string input)
 {
     _lexer = Lexer(std::move(input));
     current_token = Token();
 }
 
-Token Parser::Lexer::get_next_token()
+Shell::Token Shell::Parser::Lexer::getNextToken()
 {
     if (!is_eof()) {
         if (is_space()) {
@@ -22,7 +22,7 @@ Token Parser::Lexer::get_next_token()
         Token token;
         for (auto parser : _parsers) {
             token = (this->*parser)();
-            if (token._type != Token::INVALID)
+            if (token.getType() != Token::INVALID)
                 return token;
         }
         return {Token::INVALID, ""};
@@ -30,13 +30,13 @@ Token Parser::Lexer::get_next_token()
     return {Token::END, ""};
 }
 
-void Parser::Lexer::skip_whitespace()
+void Shell::Parser::Lexer::skip_whitespace()
 {
     while (!is_eof() && is_space())
         _pos++;
 }
 
-Token Parser::Lexer::parse_type()
+Shell::Token Shell::Parser::Lexer::parseType()
 {
     std::string type;
     while (!is_eof() && isalpha(_input[_pos])) {
@@ -48,7 +48,7 @@ Token Parser::Lexer::parse_type()
 
 std::string sizes[] = {"S", "M", "L", "XL", "XXL"};
 
-Token Parser::Lexer::parse_size()
+Shell::Token Shell::Parser::Lexer::parseSize()
 {
     std::string size;
 
@@ -62,7 +62,7 @@ Token Parser::Lexer::parse_size()
     return {Token::INVALID, ""};
 }
 
-Token Parser::Lexer::parse_number()
+Shell::Token Shell::Parser::Lexer::parseNumber()
 {
     std::string number;
     if (_input[_pos] == 'x') {
@@ -77,7 +77,7 @@ Token Parser::Lexer::parse_number()
     return {Token::INVALID, ""};
 }
 
-Token Parser::Lexer::parse_semicolon()
+Shell::Token Shell::Parser::Lexer::parseSemicolon()
 {
     if (_input[_pos] == ';') {
         _pos++;
@@ -86,33 +86,34 @@ Token Parser::Lexer::parse_semicolon()
     return {Token::INVALID, ""};
 }
 
-void Parser::eat(Token::Type token_type)
+void Shell::Parser::eat(Token::Type token_type)
 {
-    current_token = _lexer.get_next_token();
-    if ((current_token._type & token_type) != 0)
+    current_token = _lexer.getNextToken();
+    if ((current_token.getType() & token_type) != 0)
         return;
     else
         throw InvalidToken("Invalid token");
 }
 
-int shell()
+int Shell::run()
 {
     std::string input;
     std::getline(std::cin, input);
 
     while (!input.empty()) {
         Parser parser(input);
-        while (parser.current_token._type != Token::END) {
+        while (parser.current_token.getType() != Token::END) {
             try {
                 parser.eat(Token::TYPE);
-                std::cout << "TYPE: " << parser.current_token._value << std::endl;
+                std::cout << "TYPE: " << parser.current_token.getValue() << std::endl;
                 parser.eat(Token::SIZE);
-                std::cout << "SIZE: " << parser.current_token._value << std::endl;
+                std::cout << "SIZE: " << parser.current_token.getValue() << std::endl;
                 parser.eat(Token::NUMBER);
-                std::cout << "NUMBER: " << parser.current_token._value << std::endl;
+                std::cout << "NUMBER: " << parser.current_token.getValue() << std::endl;
                 parser.eat((Token::Type)(Token::SEMICOLON | Token::END));
+                //do something with the tokens
             }
-            catch (Parser::InvalidToken &e) {
+            catch (Shell::Parser::InvalidToken &e) {
                 std::cerr << e.what() << std::endl;
                 return 84;
             }
