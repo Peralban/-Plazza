@@ -8,7 +8,7 @@
 #-------------- Main Variables --------------#
 
 SRC			=	main.cpp									\
-				shellParser.cpp								\
+				shell/shellParser.cpp						\
 
 TRUE_SRC 	= 	$(patsubst %,src/%, $(SRC))
 

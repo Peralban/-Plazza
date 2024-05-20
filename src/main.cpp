@@ -6,7 +6,7 @@
 */
 
 #include <iostream>
-#include "shellParser.hpp"
+#include "shell/shellParser.hpp"
 
 int main()
 {
