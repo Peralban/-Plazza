@@ -10,7 +10,6 @@
 SRC			=	main.cpp									\
 				shellParser.cpp								\
 				Arguments.cpp								\
-				Reception.cpp								\
 				Errors/ArgumentsErrors.cpp					\
 				Errors/AError.cpp							\
 
