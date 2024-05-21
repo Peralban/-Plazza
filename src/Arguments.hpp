@@ -8,7 +8,7 @@
 #pragma once
 
 #include <iostream>
-#include "ArgumentsErrors.hpp"
+#include "Errors/ArgumentsErrors.hpp"
 
 namespace Plazza {
     /**

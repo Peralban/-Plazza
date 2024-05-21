@@ -22,7 +22,7 @@ NAME		=	plazza
 
 WARNINGS	=	-Wall -Wextra -Wshadow
 
-INCLUDE		=	-I./src/Errors
+INCLUDE		=	-I./src/
 
 VALGRIND	=	-g3
 
