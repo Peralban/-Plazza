@@ -12,7 +12,7 @@ Plazza::Arguments::Arguments(int ac, char **av)
     try {
         if (ac != 4) {
             displayUsage();
-    } if (std::stof(av[1]) < 0 || std::stof(av[1]) > 1) {
+            throw Errors::ArgumentNumber("Invalid number of arguments");
         } if (std::stof(av[1]) < 0) {
             displayUsage();
             throw Errors::WrongMultiplier("Invalid multiplier");
