@@ -9,6 +9,11 @@
 
 SRC			=	main.cpp									\
 				shellParser.cpp								\
+				Arguments.cpp								\
+				Reception.cpp								\
+				Errors/ArgumentsErrors.cpp					\
+				Errors/AError.cpp							\
+
 
 TRUE_SRC 	= 	$(patsubst %,src/%, $(SRC))
 
@@ -18,7 +23,7 @@ NAME		=	plazza
 
 WARNINGS	=	-Wall -Wextra -Wshadow
 
-INCLUDE		=	-I./include
+INCLUDE		=	-I./src/Errors
 
 VALGRIND	=	-g3
 
