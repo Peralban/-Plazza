@@ -31,7 +31,7 @@ void Kitchen::createCook()
 /* ----------------- Stock ----------------- */
 
 Kitchen::Stock::Stock()
-    : _dough(5), _tomato(5), _gruyere(5), _ham(5), _mushroom(5), _steak(5), _eggplant(5), _goatcheese(5)
+    : _dough(5), _tomato(5), _gruyere(5), _ham(5), _mushroom(5), _steak(5), _eggplant(5), _goatCheese(5)
 {
 }
 
@@ -48,13 +48,13 @@ void Kitchen::Stock::restock()
     _mushroom++;
     _steak++;
     _eggplant++;
-    _goatcheese++;
+    _goatCheese++;
     _chiefLove++;
 }
 
 bool Kitchen::Stock::hasEnoughIngredient(Pizza pizza)
 {
-    return (_dough >= _pizzaIngredients[pizza][Dough] && _tomato >= _pizzaIngredients[pizza][Tomato] && _gruyere >= _pizzaIngredients[pizza][Gruyere] && _ham >= _pizzaIngredients[pizza][Ham] && _mushroom >= _pizzaIngredients[pizza][Mushroom] && _steak >= _pizzaIngredients[pizza][Steak] && _eggplant >= _pizzaIngredients[pizza][Eggplant] && _goatcheese >= _pizzaIngredients[pizza][Goatcheese] && _chiefLove >= _pizzaIngredients[pizza][ChiefLove]);
+    return (_dough >= _pizzaIngredients[pizza][Dough] && _tomato >= _pizzaIngredients[pizza][Tomato] && _gruyere >= _pizzaIngredients[pizza][Gruyere] && _ham >= _pizzaIngredients[pizza][Ham] && _mushroom >= _pizzaIngredients[pizza][Mushroom] && _steak >= _pizzaIngredients[pizza][Steak] && _eggplant >= _pizzaIngredients[pizza][Eggplant] && _goatCheese >= _pizzaIngredients[pizza][Goatcheese] && _chiefLove >= _pizzaIngredients[pizza][ChiefLove]);
 }
 
 void Kitchen::Stock::takeIngredient(Pizza pizza)
@@ -66,6 +66,6 @@ void Kitchen::Stock::takeIngredient(Pizza pizza)
     _mushroom -= _pizzaIngredients[pizza][Mushroom];
     _steak -= _pizzaIngredients[pizza][Steak];
     _eggplant -= _pizzaIngredients[pizza][Eggplant];
-    _goatcheese -= _pizzaIngredients[pizza][Goatcheese];
+    _goatCheese -= _pizzaIngredients[pizza][Goatcheese];
     _chiefLove -= _pizzaIngredients[pizza][ChiefLove];
 }
