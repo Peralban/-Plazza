@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include <iostream>
 #include <vector>
+#include "Arguments.hpp"
 
 // TYPE := [ a .. zA .. Z ]+
 // SIZE := S | M | L | XL | XXL
@@ -172,5 +172,5 @@ namespace Shell {
      * @return an integer indicating the success or failure of the operation.
      * A return value of 0 typically indicates success, while any other value indicates failure.
      */
-    int run();
+    int run(Plazza::Arguments &args);
 }
