@@ -10,8 +10,6 @@
 SRC			=	main.cpp									\
 				shellParser.cpp								\
 				Arguments.cpp								\
-				Errors/ArgumentsErrors.cpp					\
-				Errors/AError.cpp							\
 
 
 TRUE_SRC 	= 	$(patsubst %,src/%, $(SRC))
