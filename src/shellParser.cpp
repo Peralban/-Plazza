@@ -87,7 +87,7 @@ void Shell::Parser::eat(Token::Type token_type)
         throw InvalidToken("Invalid token");
 }
 
-int Shell::run(Arguments &args)
+int Shell::run(Plazza::Arguments &args)
 {
     std::string input;
     std::getline(std::cin, input);
