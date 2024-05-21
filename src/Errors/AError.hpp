@@ -28,7 +28,7 @@ namespace Errors {
          * @brief Returns the error message.
          * @return A pointer to a constant character string representing the error message.
          */
-        const char *what() const noexcept override;
+        const char *what() const noexcept override { return _message.c_str(); }
 
     protected:
         std::string _message; /**< The error message. */

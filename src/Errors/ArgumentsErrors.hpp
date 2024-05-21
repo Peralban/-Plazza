@@ -26,7 +26,7 @@ namespace Errors {
          * @brief Constructor for ArgumentNumber.
          * @param message The error message.
          */
-        ArgumentNumber(std::string message);
+        ArgumentNumber(std::string message) { _message = message; }
     };
 
     /**
@@ -39,7 +39,7 @@ namespace Errors {
          * @brief Constructor for WrongMultiplier.
          * @param message The error message.
          */
-        WrongMultiplier(std::string message);
+        WrongMultiplier(std::string message) { _message = message; }
     };
 
     /**
@@ -52,7 +52,7 @@ namespace Errors {
          * @brief Constructor for WrongCookNumber.
          * @param message The error message.
          */
-        WrongCookNumber(std::string message);
+        WrongCookNumber(std::string message) { _message = message; }
     };
 
     /**
@@ -65,6 +65,6 @@ namespace Errors {
          * @brief Constructor for WrongRestockTime.
          * @param message The error message.
          */
-        WrongRestockTime(std::string message);
+        WrongRestockTime(std::string message) { _message = message; }
     };
 }
