@@ -5,12 +5,17 @@
 ** DESCRIPTION
 */
 
-#include <iostream>
 #include "shellParser.hpp"
+#include "Arguments.hpp"
 
-int main()
+int main(int ac, char **av)
 {
-    std::cout << "Hello World" << std::endl;
-    Shell::run();
+    try {
+        Plazza::Arguments args(ac, av);
+        Shell::run(args);
+    } catch (const Errors::ArgumentsErrors &e) {
+        std::cerr << e.what() << std::endl;
+        return 84;
+    }
     return 0;
 }
