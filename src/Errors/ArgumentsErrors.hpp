@@ -67,4 +67,17 @@ namespace Errors {
          */
         WrongRestockTime(std::string message) { _message = message; }
     };
+
+    /**
+     * @class InvalidArgument
+     * @brief Error class for invalid argument.
+     */
+    class InvalidArgument : public ArgumentsErrors {
+    public:
+        /**
+         * @brief Constructor for InvalidArgument.
+         * @param message The error message.
+         */
+        InvalidArgument(std::string message) { _message = message; }
+    };
 }

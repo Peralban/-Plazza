@@ -9,18 +9,23 @@
 
 Plazza::Arguments::Arguments(int ac, char **av)
 {
-    if (ac != 4) {
-        displayUsage();
-        throw Errors::ArgumentNumber("Invalid number of arguments");
+    try {
+        if (ac != 4) {
+            displayUsage();
     } if (std::stof(av[1]) < 0 || std::stof(av[1]) > 1) {
-        displayUsage();
-        throw Errors::WrongMultiplier("Invalid multiplier");
-    } if (std::stoi(av[2]) <= 0) {
-        displayUsage();
-        throw Errors::WrongCookNumber("Invalid number of cooks");
-    } if (std::stof(av[3]) <= 0) {
-        displayUsage();
-        throw Errors::WrongRestockTime("Invalid restock time");
+        } if (std::stof(av[1]) < 0) {
+            displayUsage();
+            throw Errors::WrongMultiplier("Invalid multiplier");
+        } if (std::stoi(av[2]) <= 0) {
+            displayUsage();
+            throw Errors::WrongCookNumber("Invalid number of cooks");
+        } if (std::stof(av[3]) <= 0) {
+            displayUsage();
+            throw Errors::WrongRestockTime("Invalid restock time");
+        }
+    } catch (Errors::ArgumentsErrors &e) {
+        std::cerr << e.what() << std::endl;
+        exit(84);
     }
     _multiplier = std::stof(av[1]);
     cookNumber = std::stoi(av[2]);
