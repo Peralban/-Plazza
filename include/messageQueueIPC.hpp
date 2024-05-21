@@ -15,7 +15,11 @@
 /**
  * @class MessageQueueIPC
  * @brief A class to handle inter-process communication using message queues.
+ * @tparam T The type of the messages in the queue.
+ * T must be a type that can be constructed from a string.
+ * Strings must be constructable from T.
  */
+template <typename T>
 class MessageQueueIPC {
 public:
     /**
@@ -37,36 +41,37 @@ public:
 
     /**
      * @brief Pushes a message to the message queue.
-     * @param message The message to be pushed.
+     * @tparam message The message to be pushed.
      */
-    void push(std::string message)
+    void push(T message)
     {
         message_buf buf = {};
+        std::string message_str = message;
+        strcpy(buf.mtext, message_str.c_str());
         buf.mtype = 1;
-        strcpy(buf.mtext, message.c_str());
-        msgsnd(_msg_id, &buf, sizeof(buf.mtext), IPC_NOWAIT);
+        msgsnd(_msg_id, &buf, sizeof(buf.mtext), 0);
     }
 
     /**
      * @brief Pops a message from the message queue.
      * @return The popped message.
      */
-    std::string pop()
+    T pop()
     {
         message_buf buf = {};
         msgrcv(_msg_id, &buf, sizeof(buf.mtext), 1, IPC_NOWAIT);
-        return std::string(buf.mtext);
+        return T(buf.mtext);
     }
 
     /**
      * @brief Gets the message at the front of the queue without removing it.
      * @return The message at the front of the queue.
      */
-    [[nodiscard]] std::string front()
+    [[nodiscard]] T front()
     {
         message_buf buf = {};
         msgrcv(_msg_id, &buf, sizeof(buf.mtext), 0, MSG_COPY | IPC_NOWAIT);
-        return std::string(buf.mtext);
+        return T(buf.mtext);
     }
 
     /**

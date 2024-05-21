@@ -31,7 +31,7 @@ public:
 
     /**
      * @brief Pushes a message to the message queue.
-     * @param message The message to be pushed.
+     * @tparam message The message to be pushed.
      */
     void push(T message)
     {
