@@ -8,6 +8,7 @@
 #-------------- Main Variables --------------#
 
 SRC			=	main.cpp									\
+				shellParser.cpp								\
 
 TRUE_SRC 	= 	$(patsubst %,src/%, $(SRC))
 
@@ -17,7 +18,7 @@ NAME		=	plazza
 
 WARNINGS	=	-Wall -Wextra -Wshadow
 
-INCLUDE		=	-I./src
+INCLUDE		=	-I./include
 
 VALGRIND	=	-g3
 
@@ -27,15 +28,15 @@ CXXFLAGS	=	$(INCLUDE) $(WARNINGS)
 
 #-------------- Tests Variables --------------#
 
-TEST_SRC		=	MainTests.cpp							\
+TEST_SRC		=	mainTests.cpp							\
 
-TESTS_LIBS		= -lcriterion
+TESTS_LIBS		= 	-lcriterion
 
-TESTS_INCLUDE 		= -I./Tests/Include -I./src -I.
+TESTS_INCLUDE 		= -I./tests/include -I./include
 
 TESTS_COMPILATION_FLAGS	=	--coverage
 
-TEST_TRUE_SRC	=	$(patsubst %,Tests/src/%, $(TEST_SRC))	\
+TEST_TRUE_SRC	=	$(patsubst %,tests/src/%, $(TEST_SRC))	\
 					$(filter-out src/main.cpp, $(TRUE_SRC))
 
 TESTS_FLAGS		=	$(TESTS_INCLUDE) $(WARNINGS) $(TESTS_COMPILATION_FLAGS) $(TESTS_LIBS)
