@@ -11,6 +11,7 @@
 #include <sys/ipc.h>
 #include <sys/msg.h>
 #include <cstring>
+#include <fstream>
 
 /**
  * @class MessageQueueIPC
@@ -24,10 +25,20 @@ class MessageQueueIPC {
 public:
     /**
      * @brief Constructor for the MessageQueueIPC class.
+     * @param id The ID of the message queue.
      * Initializes the key and message queue ID.
      */
-    MessageQueueIPC() {
-        _key = ftok("tmpfile", 1);
+    explicit MessageQueueIPC(int id) : _key(0), _msg_id(0) {
+        std::string tmpfile = "/tmp/MessageQueueIPC_Plazza";
+        std::ofstream file(tmpfile, std::ios::out | std::ios::trunc);
+        if (!file.is_open()) {
+            throw std::runtime_error("Cannot create tmpfile");
+        }
+        file.close();
+        if (id <= 0) {
+            throw std::runtime_error("Invalid id");
+        }
+        _key = ftok(tmpfile.c_str(), id);
         _msg_id = msgget(_key, 0666 | IPC_CREAT);
     }
 
@@ -38,6 +49,8 @@ public:
     ~MessageQueueIPC() {
         msgctl(_msg_id, IPC_RMID, nullptr);
     }
+
+    MessageQueueIPC() = delete;
 
     /**
      * @brief Pushes a message to the message queue.

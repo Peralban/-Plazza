@@ -9,6 +9,7 @@
 
 SRC			=	main.cpp									\
 				shell/shellParser.cpp						\
+				shell/runShell.cpp							\
 				Arguments/Arguments.cpp						\
 
 
