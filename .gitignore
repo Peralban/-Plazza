@@ -39,3 +39,6 @@
 
 # Executable files
 plazza
+
+# criterion test
+unit_tests*
