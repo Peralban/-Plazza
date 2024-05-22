@@ -50,10 +50,5 @@ namespace Plazza {
         double _multiplier; /**< The multiplier value. */
         int cookNumber; /**< The number of cooks. */
         double restockTime; /**< The restock time. */
-
-        /**
-         * @brief Displays the usage information for the program.
-         */
-        void displayUsage();
     };
 }
