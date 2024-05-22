@@ -11,6 +11,8 @@
 #include <list>
 #include <thread>
 #include <map>
+#include "messageQueue/messageQueueIPC.hpp"
+
 
 /**
  * @class Kitchen
@@ -127,4 +129,14 @@ class Kitchen {
         std::list<std::thread> _cooks; ///< List of cook threads.
         size_t _timeToRestock; ///< Time to restock ingredients.
         Stock _stock; ///< Stock of ingredients.
+
+        /**
+         * @brief Message queue for receiving commands.
+         */
+        MessageQueueIPC<std::string> _kitchenQueue;
+
+        /**
+         * @brief Thread for receiving commands.
+         */
+        MessageQueueIPC<std::string> _receptionQueue;
 };
