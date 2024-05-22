@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include "shell/shellParser.hpp"
+#include "Arguments/Arguments.hpp"
 
 static void displayUsage()
 {
