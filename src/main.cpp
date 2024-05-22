@@ -5,8 +5,9 @@
 ** DESCRIPTION
 */
 
-#include "shellParser.hpp"
-#include "Arguments.hpp"
+#include <iostream>
+#include "shell/shellParser.hpp"
+#include "Arguments/Arguments.hpp"
 
 static void displayUsage()
 {

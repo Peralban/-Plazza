@@ -8,7 +8,7 @@
 #pragma once
 
 #include <vector>
-#include "Arguments.hpp"
+#include "Arguments/Arguments.hpp"
 
 // TYPE := [ a .. zA .. Z ]+
 // SIZE := S | M | L | XL | XXL
