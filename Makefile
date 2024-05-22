@@ -34,7 +34,7 @@ TEST_SRC		=	mainTests.cpp							\
 
 TESTS_LIBS		= 	-lcriterion
 
-TESTS_INCLUDE 		= -I./tests/include -I./include
+TESTS_INCLUDE 		= -I./tests/include -I./include -I./src
 
 TESTS_COMPILATION_FLAGS	=	--coverage
 
