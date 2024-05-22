@@ -8,7 +8,9 @@
 #-------------- Main Variables --------------#
 
 SRC			=	main.cpp									\
-				shell/shellParser.cpp						\
+				shellParser.cpp								\
+				Arguments.cpp								\
+
 
 TRUE_SRC 	= 	$(patsubst %,src/%, $(SRC))
 
@@ -18,7 +20,7 @@ NAME		=	plazza
 
 WARNINGS	=	-Wall -Wextra -Wshadow
 
-INCLUDE		=	-I./include
+INCLUDE		=	-I./src/
 
 VALGRIND	=	-g3
 

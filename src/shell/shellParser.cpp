@@ -87,21 +87,22 @@ void Shell::Parser::eat(Token::Type token_type)
         throw InvalidToken("Invalid token");
 }
 
-int Shell::run()
+int Shell::run(Plazza::Arguments &args)
 {
     std::string input;
     std::getline(std::cin, input);
+    (void)args;
 
     while (!input.empty()) {
         Parser parser(input);
         while (parser.current_token.getType() != Token::END) {
             try {
                 parser.eat(Token::TYPE);
-                std::cout << "TYPE: " << parser.current_token.getValue() << std::endl;
+                std::cerr << "TYPE: " << parser.current_token.getValue() << std::endl;
                 parser.eat(Token::SIZE);
-                std::cout << "SIZE: " << parser.current_token.getValue() << std::endl;
+                std::cerr << "SIZE: " << parser.current_token.getValue() << std::endl;
                 parser.eat(Token::NUMBER);
-                std::cout << "NUMBER: " << parser.current_token.getValue() << std::endl;
+                std::cerr << "NUMBER: " << parser.current_token.getValue() << std::endl;
                 parser.eat((Token::Type)(Token::SEMICOLON | Token::END));
                 //do something with the tokens
             }
