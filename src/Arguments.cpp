@@ -19,9 +19,8 @@ Plazza::Arguments::Arguments(int ac, char **av)
         } if (std::stof(av[3]) <= 0) {
             throw Errors::WrongRestockTime("Invalid restock time");
         }
-    } catch (Errors::ArgumentsErrors &e) {
-        std::cerr << e.what() << std::endl;
-        exit(84);
+    } catch (const std::exception &e) {
+        throw Errors::InvalidArgument(e.what());
     }
     _multiplier = std::stof(av[1]);
     cookNumber = std::stoi(av[2]);
