@@ -8,27 +8,25 @@
 #include "shellParser.hpp"
 #include "messageQueue/messageQueueIPC.hpp"
 
-int Shell::run(Plazza::Arguments &args)
+int Shell::run(Plazza::Reception &reception)
 {
-    MessageQueueIPC<std::string> receiverQueue(1);
-    std::vector<MessageQueueIPC<std::string>> kitchenQueues;
 
     std::string input;
     std::getline(std::cin, input);
-    (void)args;
 
     while (!input.empty()) {
         Parser parser(input);
         while (parser.current_token.getType() != Token::END) {
             try {
+                std::string order;
                 parser.eat(Token::TYPE);
-                std::cerr << "TYPE: " << parser.current_token.getValue() << std::endl;
+                order += parser.current_token.getValue() + "=";
                 parser.eat(Token::SIZE);
-                std::cerr << "SIZE: " << parser.current_token.getValue() << std::endl;
+                order += parser.current_token.getValue() + "=";
                 parser.eat(Token::NUMBER);
-                std::cerr << "NUMBER: " << parser.current_token.getValue() << std::endl;
+                order += parser.current_token.getValue();
                 parser.eat((Token::Type)(Token::SEMICOLON | Token::END));
-                //do something with the tokens
+                reception.addOrder(order);
             }
             catch (Shell::Parser::InvalidToken &e) {
                 std::cerr << e.what() << std::endl;

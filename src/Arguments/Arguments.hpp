@@ -24,6 +24,11 @@ namespace Plazza {
         Arguments(int ac, char **av);
 
         /**
+         * @brief Copy constructor for the Arguments class.
+        */
+        Arguments(const Arguments &other);
+
+        /**
          * @brief Default destructor for the Arguments class.
          */
         ~Arguments() = default;
