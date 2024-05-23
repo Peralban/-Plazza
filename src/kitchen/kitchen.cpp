@@ -10,13 +10,11 @@
 Kitchen::Kitchen(size_t nbCooks, size_t time)
     : _nbCooks(nbCooks), _commandNumber(0), _timeToRestock(time)
 {
-    _stock = new Stock();
-    _cooks = new std::list<std::thread>();
+    _stock = Stock();
+    _cooks = std::list<std::thread>();
 }
 
-Kitchen::~Kitchen()
-{
-}
+Kitchen::~Kitchen() {}
 
 bool Kitchen::commandAreAvailable()
 {
@@ -31,13 +29,9 @@ void Kitchen::createCook()
 /* ----------------- Stock ----------------- */
 
 Kitchen::Stock::Stock()
-    : _dough(5), _tomato(5), _gruyere(5), _ham(5), _mushroom(5), _steak(5), _eggplant(5), _goatCheese(5)
-{
-}
+    : _dough(5), _tomato(5), _gruyere(5), _ham(5), _mushroom(5), _steak(5), _eggplant(5), _goatCheese(5) {}
 
-Kitchen::Stock::~Stock()
-{
-}
+Kitchen::Stock::~Stock() {}
 
 void Kitchen::Stock::restock()
 {
