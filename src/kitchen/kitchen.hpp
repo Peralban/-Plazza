@@ -20,10 +20,13 @@
  */
 class Kitchen {
     public:
+
         /**
          * @brief Constructor for the Kitchen class.
-         */
-        Kitchen();
+         * @param nbCooks The number of cooks.
+         * @param time The time to restock ingredients.
+        */
+        Kitchen(size_t nbCooks, size_t time);
 
         /**
          * @brief Destructor for the Kitchen class.
@@ -111,7 +114,7 @@ class Kitchen {
             size_t _mushroom; ///< Amount of mushroom in stock.
             size_t _steak; ///< Amount of steak in stock.
             size_t _eggplant; ///< Amount of eggplant in stock.
-            size_t _goatcheese; ///< Amount of goat cheese in stock.
+            size_t _goatCheese; ///< Amount of goat cheese in stock.
             size_t _chiefLove; ///< Amount of chief love in stock.
 
             /**
