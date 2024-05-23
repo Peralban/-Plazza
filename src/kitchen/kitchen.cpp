@@ -7,11 +7,14 @@
 
 #include "kitchen.hpp"
 
-Kitchen::Kitchen(size_t nbCooks, size_t time)
-    : _nbCooks(nbCooks), _commandNumber(0), _timeToRestock(time)
+Kitchen::Kitchen(size_t nbCooks, size_t timeToRestock, size_t multi);
+    : _nbCooks(nbCooks), _timeToRestock(timeToRestock), _multi(multi), _stock(nullptr), _commandNumber(0), _cooks(nullptr), _clockIsRunning(false)
 {
     _stock = Stock();
-    _cooks = std::list<std::thread>();
+    _cooks = std::vector<std::thread>();
+    _messageQueue = make_shared<messageQueueThread>();
+    for (size_t i = 0; i < nbCooks; i++)
+        createCook();
 }
 
 Kitchen::~Kitchen() {}
@@ -23,7 +26,21 @@ bool Kitchen::commandAreAvailable()
 
 void Kitchen::createCook()
 {
-    //_cooks->push_back(std::thread(&Kitchen::cook, this));
+    _cooks.push_back(Cook(
+}
+
+void Kitchen::update()
+{
+    int waiting_coock = 0;
+    for (auto &cook : *_cooks) {
+        if (cook->getStatus() == WAITING)
+            waiting_coock++;
+    }
+    if (waiting_coock == _nbCooks) {
+        _clockIsRunning = true;
+
+    }
+
 }
 
 /* ----------------- Stock ----------------- */

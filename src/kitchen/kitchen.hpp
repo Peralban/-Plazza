@@ -8,10 +8,11 @@
 #pragma once
 
 #include <iostream>
-#include <list>
+#include <vector>
 #include <thread>
 #include <map>
 #include "messageQueue/messageQueueIPC.hpp"
+#include "cook.hpp"
 
 
 /**
@@ -22,11 +23,21 @@ class Kitchen {
     public:
 
         /**
+         * @enum Pizza
+         * @brief Enum for the different types of pizzas.
+         */
+        enum Pizza {
+            NONE = -1,
+            Regina,
+            Margarita,
+            Americana,
+            Fantasia
+        };
+
+        /**
          * @brief Constructor for the Kitchen class.
-         * @param nbCooks The number of cooks.
-         * @param time The time to restock ingredients.
-        */
-        Kitchen(size_t nbCooks, size_t time);
+         */
+        Kitchen(size_t nbCooks, size_t timeToRestock, size_t multi);
 
         /**
          * @brief Destructor for the Kitchen class.
@@ -43,6 +54,11 @@ class Kitchen {
          * @brief Creates a new cook.
          */
         void createCook();
+
+        /**
+         * @brief Starts the kitchen.
+         */
+         void update();
 
     private:
         /**
@@ -77,16 +93,6 @@ class Kitchen {
                 ChiefLove
             };
 
-            /**
-             * @enum Pizza
-             * @brief Enum for the different types of pizzas.
-             */
-            enum Pizza {
-                Regina,
-                Margarita,
-                Americana,
-                Fantasia
-            };
 
             /**
              * @brief Restocks the ingredients.
@@ -129,9 +135,11 @@ class Kitchen {
         };
         size_t _nbCooks; ///< Number of cooks.
         size_t _commandNumber; ///< Number of commands.
-        std::list<std::thread> _cooks; ///< List of cook threads.
+        std::vector<Cook> _cooks; ///< Vector of cooks.
         size_t _timeToRestock; ///< Time to restock ingredients.
+        size_t _multi; ///< Multiplier for cooking time.
         Stock _stock; ///< Stock of ingredients.
+        bool _clockIsRunning; ///< Flag for the clock status.
 
         /**
          * @brief Message queue for receiving commands.
@@ -142,4 +150,9 @@ class Kitchen {
          * @brief Thread for receiving commands.
          */
         MessageQueueIPC<std::string> _receptionQueue;
+
+        /**
+         * @brief Thread for receiving commands.
+         */
+        std::shared_ptr<messageQueueThread> _messageQueue;
 };
