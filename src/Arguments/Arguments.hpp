@@ -9,8 +9,40 @@
 
 #include <iostream>
 #include "Errors/ArgumentsErrors.hpp"
+#include <map>
 
 namespace Plazza {
+
+    enum PizzaType {
+        Regina = 1 ,
+        Margarita = 2 ,
+        Americana = 4 ,
+        Fantasia = 8
+    };
+
+    enum PizzaSize {
+        S = 1 ,
+        M = 2 ,
+        L = 4 ,
+        XL = 8 ,
+        XXL = 16
+    };
+
+    static const std::map<std::string, Plazza::PizzaType> pizzaTypesMap = {
+            {"regina", Plazza::PizzaType::Regina},
+            {"margarita", Plazza::PizzaType::Margarita},
+            {"americana", Plazza::PizzaType::Americana},
+            {"fantasia", Plazza::PizzaType::Fantasia}
+    };
+
+    static const std::map<std::string, Plazza::PizzaSize> pizzaSizesMap = {
+            {"S", Plazza::PizzaSize::S},
+            {"M", Plazza::PizzaSize::M},
+            {"L", Plazza::PizzaSize::L},
+            {"XL", Plazza::PizzaSize::XL},
+            {"XXL", Plazza::PizzaSize::XXL}
+    };
+
     /**
      * @brief The Arguments class represents the command line arguments passed to the program.
      */
@@ -22,6 +54,11 @@ namespace Plazza {
          * @param av The array of command line arguments.
          */
         Arguments(int ac, char **av);
+
+        /**
+         * @brief Copy constructor for the Arguments class.
+        */
+        Arguments(const Arguments &other);
 
         /**
          * @brief Default destructor for the Arguments class.

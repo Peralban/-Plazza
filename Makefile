@@ -9,7 +9,9 @@
 
 SRC			=	main.cpp									\
 				shell/shellParser.cpp						\
+				shell/runShell.cpp							\
 				Arguments/Arguments.cpp						\
+				Reception/Reception.cpp						\
 				kitchen/kitchen.cpp							\
 				kitchen/cook.cpp							\
 
@@ -36,7 +38,7 @@ TEST_SRC		=	mainTests.cpp							\
 
 TESTS_LIBS		= 	-lcriterion
 
-TESTS_INCLUDE 		= -I./tests/include -I./include -I./src
+TESTS_INCLUDE 		= -I./tests/include -I./src
 
 TESTS_COMPILATION_FLAGS	=	--coverage
 

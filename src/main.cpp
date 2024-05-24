@@ -8,6 +8,7 @@
 #include <iostream>
 #include "shell/shellParser.hpp"
 #include "Arguments/Arguments.hpp"
+#include "Reception/Reception.hpp"
 
 static void displayUsage()
 {
@@ -21,7 +22,8 @@ int main(int ac, char **av)
 {
     try {
         Plazza::Arguments args(ac, av);
-        Shell::run(args);
+        Plazza::Reception reception(args);
+        Shell::run(reception);
     } catch (const Errors::ArgumentsErrors &e) {
         std::cerr << e.what() << std::endl;
         displayUsage();

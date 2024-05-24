@@ -27,6 +27,13 @@ Plazza::Arguments::Arguments(int ac, char **av)
     restockTime = std::stof(av[3]);
 }
 
+Plazza::Arguments::Arguments(const Arguments &other)
+{
+    _multiplier = other.getMultiplier();
+    cookNumber = other.getCookNumber();
+    restockTime = other.getRestockTime();
+}
+
 double Plazza::Arguments::getMultiplier() const
 {
     return _multiplier;
