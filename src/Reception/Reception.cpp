@@ -47,3 +47,10 @@ void Plazza::Reception::createKitchen()
         exit(0);
     }
 }
+
+void Plazza::Reception::getStatus()
+{
+    //for (auto &kitchenQueue : _kitchenQueues) {
+    //    std::cout << "Kitchen " << kitchenQueue.getID() - 1 << ": " << kitchenQueue.size() << " orders" << std::endl;
+    //}
+}

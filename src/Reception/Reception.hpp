@@ -42,6 +42,11 @@ namespace Plazza {
         void addOrder(const std::string &order);
 
         /**
+         * @brief Gets and print the status of the reception.
+         */
+        void getStatus();
+
+        /**
          * @brief Creates a new kitchen and adds it to the list of kitchens.
          */
         void createKitchen();

@@ -78,6 +78,17 @@ Shell::Token Shell::Parser::parseSemicolon()
     return {Token::INVALID, ""};
 }
 
+Shell::Token Shell::Parser::parseStatus()
+{
+    std::string status;
+    status = _input.substr(_pos, strlen("status"));
+    if (status == "status") {
+        _pos += strlen("status");
+        return {Token::STATUS, status};
+    }
+    return {Token::INVALID, ""};
+}
+
 void Shell::Parser::eat(Token::Type token_type)
 {
     current_token = getNextToken();

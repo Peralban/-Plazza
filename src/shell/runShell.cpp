@@ -50,7 +50,12 @@ int Shell::run(Plazza::Reception &reception)
         while (parser.current_token.getType() != Token::END) {
             try {
                 std::string order;
-                parser.eat(Token::TYPE);
+                parser.eat((Token::Type)(Token::TYPE | Token::STATUS));
+                if (parser.current_token.getType() == Token::STATUS) {
+                    parser.eat((Token::Type)(Token::SEMICOLON | Token::END));
+                    reception.getStatus();
+                    continue;
+                }
                 order += parser.current_token.getValue() + " ";
                 parser.eat(Token::SIZE);
                 order += parser.current_token.getValue() + " ";
