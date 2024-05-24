@@ -24,9 +24,15 @@ void Kitchen::run()
             _stock.restock();
             _lastRestock = actualRestock;
         }
-        if (!_kitchenQueue.empty())
-            this->handleCommands();
-        manageCooks();
+        if (!_kitchenQueue.empty()) {
+            try {
+                this->handleCommands();
+            } catch (std::exception &e) {
+                throw std::runtime_error("Error while handling commands");
+            }
+        }
+        manageWaitingCommands();
+        manageInProgressCommands();
     }
 }
 
@@ -68,6 +74,26 @@ void Kitchen::Stock::takeIngredient(Pizza pizza)
     chiefLove -= _pizzaIngredients[pizza][ChiefLove];
 }
 
+Kitchen::Stock::Pizza Kitchen::Stock::getPizzaFromString(const std::string &pizza)
+{
+    std::regex pizzaRegex("");
+    std::smatch match;
+
+    if (std::regex_match(pizza, match, pizzaRegex)) {
+        if (match[1].str() == "regina")
+            return Regina;
+        else if (match[1].str() == "margarita")
+            return Margarita;
+        else if (match[1].str() == "americana")
+            return Americana;
+        else if (match[1].str() == "fantasia")
+            return Fantasia;
+    }
+    throw std::runtime_error("Invalid pizza type");
+}
+
+/* -----------------/ Stock /----------------- */
+
 bool Kitchen::commandAreAvailable()
 {
     return (_waitingCommands.size() + _inProgressCommands.size() < _nbCooks * 2);
@@ -85,20 +111,17 @@ void Kitchen::handleCommands()
         this->status();
     else {
         try {
-            std::regex commandRegex("");
-            std::smatch match;
-            if (std::regex_match(command, match, commandRegex)) {
+            Stock::Pizza pizza = _stock.getPizzaFromString(command);
+            if (_stock.hasEnoughIngredient(pizza)) {
+                _stock.takeIngredient(pizza);
                 _waitingCommands.push_back(command);
+                _receptionQueue.push("OK" + std::to_string(_id));
             } else
-                throw std::runtime_error("Invalid message queue command");
+                _receptionQueue.push("KO" + std::to_string(_id));
         } catch (std::exception &e) {
-            throw std::runtime_error("Invalid message queue command");
+            throw std::runtime_error("Invalid pizza type");
         }
     }
-}
-
-void Kitchen::manageCooks()
-{
 }
 
 void Kitchen::status()
@@ -124,4 +147,16 @@ void Kitchen::status()
         //     std::cout << "cooking" << std::endl;
     }
     _receptionQueue.push("OK" + std::to_string(_id));
+}
+
+void Kitchen::manageWaitingCommands()
+{
+    for (size_t i = 0; i < _waitingCommands.size(); i++) {
+    }
+}
+
+void Kitchen::manageInProgressCommands()
+{
+    for (size_t i = 0; i < _inProgressCommands.size(); i++) {
+    }
 }

@@ -104,6 +104,12 @@ class Kitchen {
              */
             void takeIngredient(Pizza pizza);
 
+            /**
+             * @brief Cooks the pizza.
+             * @param pizza The pizza to cook.
+             */
+            Pizza getPizzaFromString(const std::string &pizza);
+
             size_t dough; ///< Amount of dough in stock.
             size_t tomato; ///< Amount of tomato in stock.
             size_t gruyere; ///< Amount of gruyere in stock.
@@ -165,12 +171,23 @@ class Kitchen {
         void handleCommands();
 
         /**
-         * @brief Manage the cook threads.
-         */
-        void manageCooks();
-
-        /**
          * @brief Conveys the status of the kitchen to the reception.
          */
         void status();
+
+        /**
+         * @brief Manages the waiting commands.
+         * @note This method checks if the waiting commands can be moved to the in progress commands.
+         * If there are available cooks, the waiting commands are moved to the in progress commands.
+         * If there are no available cooks, the waiting commands remain in the waiting commands list.
+         * If the waiting commands are moved to the in progress commands, the cook is updated with the command.
+         */
+        void manageWaitingCommands();
+
+        /**
+         * @brief Manages the in progress commands.
+         * @note This method checks if the in progress commands are completed.
+         * If the in progress commands are completed, the command is removed from the in progress commands list.
+         */
+        void manageInProgressCommands();
 };
