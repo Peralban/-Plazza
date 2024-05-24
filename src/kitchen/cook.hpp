@@ -12,6 +12,7 @@
 #include <chrono>
 #include <memory>
 #include "messageQueue/messageQueueThread.hpp"
+#include "Arguments/Arguments.hpp"
 
 class Cook {
     public:
@@ -27,12 +28,12 @@ class Cook {
 
         status getStatus() { return _status; }
 
-        int getPizzaType() { return (int) _pizzaType; }
+        Plazza::PizzaType getPizzaType() { return _pizzaType; }
 
     protected:
     private:
         std::shared_ptr<MessageQueueThread<std::string>> _messageQueue;
         std::thread _thread;
-        int _pizzaType; // will be changed with future enum
+        Plazza::PizzaType _pizzaType; // will be changed with future enum
         status _status;
 };
