@@ -20,19 +20,19 @@ class Cook {
             WAITING
         };
 
-        Cook(std::shared_ptr<messageQueueThread> messageQueue);
+        Cook(std::shared_ptr<MessageQueueThread<std::string>> messageQueue);
         ~Cook();
 
-        void Cook::cookRoutine(std::shared_ptr<messageQueueThread> messageQueue);
+        void cookRoutine(std::shared_ptr<MessageQueueThread<std::string>> messageQueue);
 
         status getStatus() { return _status; }
 
-        Kitchen::Pizza getPizzaType() { return _pizzaType; }
+        int getPizzaType() { return (int) _pizzaType; }
 
     protected:
     private:
+        std::shared_ptr<MessageQueueThread<std::string>> _messageQueue;
         std::thread _thread;
-        std::shared_ptr<messageQueueThread> _messageQueue;
+        int _pizzaType; // will be changed with future enum
         status _status;
-        Kitchen::Pizza _pizzaType; // will be changed with future enum
 };

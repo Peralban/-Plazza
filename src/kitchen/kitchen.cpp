@@ -6,15 +6,15 @@
 */
 
 #include "kitchen.hpp"
+#include "cook.hpp"
 
-Kitchen::Kitchen(size_t nbCooks, size_t timeToRestock, size_t multi);
-    : _nbCooks(nbCooks), _timeToRestock(timeToRestock), _multi(multi), _stock(nullptr), _commandNumber(0), _cooks(nullptr), _clockIsRunning(false)
+Kitchen::Kitchen(size_t nbCooks, size_t timeToRestock, size_t multi)
+    : _nbCooks(nbCooks), _commandNumber(0), _timeToRestock(timeToRestock), _multi(multi), _clockIsRunning(false)
 {
     _stock = Stock();
-    _cooks = std::vector<std::thread>();
-    _messageQueue = make_shared<messageQueueThread>();
+    _messageQueue = std::make_shared<MessageQueueThread<std::string>>();
     for (size_t i = 0; i < nbCooks; i++)
-        createCook();
+        _cooks.push_back(std::make_shared<Cook>(_messageQueue));
 }
 
 Kitchen::~Kitchen() {}
@@ -24,19 +24,14 @@ bool Kitchen::commandAreAvailable()
     return _commandNumber != _nbCooks * 2;
 }
 
-void Kitchen::createCook()
-{
-    _cooks.push_back(Cook(
-}
-
 void Kitchen::update()
 {
-    int waiting_coock = 0;
-    for (auto &cook : *_cooks) {
-        if (cook->getStatus() == WAITING)
-            waiting_coock++;
+    size_t waiting_cook = 0;
+    for (auto &cook : _cooks) {
+        if (cook->getStatus() == Cook::WAITING)
+            waiting_cook++;
     }
-    if (waiting_coock == _nbCooks) {
+    if (waiting_cook == _nbCooks) {
         _clockIsRunning = true;
 
     }

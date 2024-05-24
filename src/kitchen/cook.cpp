@@ -9,7 +9,10 @@
 #include "kitchen.hpp"
 #include <string>
 
-void Cook::cookRoutine(std::shared_ptr<messageQueueThread> messageQueue)
+Cook::Cook(std::shared_ptr<MessageQueueThread<std::string>> messageQueue) :
+        _messageQueue(messageQueue), _thread(), _pizzaType(0), _status(WAITING) {}
+
+void Cook::cookRoutine(std::shared_ptr<MessageQueueThread<std::string>> messageQueue)
 {
     while (true) {
         int pizzaType =  std::stoi(messageQueue->pop());
@@ -24,10 +27,6 @@ void Cook::cookRoutine(std::shared_ptr<messageQueueThread> messageQueue)
         }
     }
 }
-
-Cook::Cook(std::shared_ptr<messageQueueThread> messageQueue) :
-    _messageQueue(messageQueue), _status(WAITING), _pizzaType(Kitchen::NONE), _thread(&Cook::cookRoutine, this, messageQueue)
-{}
 
 Cook::~Cook()
 {

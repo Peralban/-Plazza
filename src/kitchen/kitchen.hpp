@@ -12,6 +12,7 @@
 #include <thread>
 #include <map>
 #include "messageQueue/messageQueueIPC.hpp"
+#include "messageQueue/messageQueueThread.hpp"
 #include "cook.hpp"
 
 
@@ -126,7 +127,7 @@ class Kitchen {
             /**
              * @brief Map for storing the ingredients required for each type of pizza.
              */
-            std::map<Kitchen::Stock::Pizza, std::map<Ingredients, size_t>> _pizzaIngredients = {
+            std::map<Kitchen::Pizza, std::map<Ingredients, size_t>> _pizzaIngredients = {
                 {Regina, {{Dough, 1}, {Tomato, 1}, {Gruyere, 1}, {Ham, 1}, {Mushroom, 1}}},
                 {Margarita, {{Dough, 1}, {Tomato, 1}, {Gruyere, 1}}},
                 {Americana, {{Dough, 1}, {Tomato, 1}, {Gruyere, 1}, {Steak, 1}}},
@@ -135,7 +136,7 @@ class Kitchen {
         };
         size_t _nbCooks; ///< Number of cooks.
         size_t _commandNumber; ///< Number of commands.
-        std::vector<Cook> _cooks; ///< Vector of cooks.
+        std::vector<std::shared_ptr<Cook>> _cooks; ///< Vector of cooks.
         size_t _timeToRestock; ///< Time to restock ingredients.
         size_t _multi; ///< Multiplier for cooking time.
         Stock _stock; ///< Stock of ingredients.
@@ -154,5 +155,5 @@ class Kitchen {
         /**
          * @brief Thread for receiving commands.
          */
-        std::shared_ptr<messageQueueThread> _messageQueue;
+        std::shared_ptr<MessageQueueThread<std::string>> _messageQueue;
 };
