@@ -11,6 +11,10 @@
 #include <list>
 #include <thread>
 #include <map>
+#include <unordered_map>
+#include <functional>
+#include <queue>
+#include <chrono>
 #include "messageQueue/messageQueueIPC.hpp"
 
 
@@ -34,15 +38,9 @@ class Kitchen {
         ~Kitchen();
 
         /**
-         * @brief Checks if there are available commands.
-         * @return true if commands are available, false otherwise.
+         * @brief Runs the kitchen.
          */
-        bool commandAreAvailable();
-
-        /**
-         * @brief Creates a new cook.
-         */
-        void createCook();
+        void run();
 
     private:
         /**
@@ -106,17 +104,17 @@ class Kitchen {
              */
             void takeIngredient(Pizza pizza);
 
-        private:
-            size_t _dough; ///< Amount of dough in stock.
-            size_t _tomato; ///< Amount of tomato in stock.
-            size_t _gruyere; ///< Amount of gruyere in stock.
-            size_t _ham; ///< Amount of ham in stock.
-            size_t _mushroom; ///< Amount of mushroom in stock.
-            size_t _steak; ///< Amount of steak in stock.
-            size_t _eggplant; ///< Amount of eggplant in stock.
-            size_t _goatCheese; ///< Amount of goat cheese in stock.
-            size_t _chiefLove; ///< Amount of chief love in stock.
+            size_t dough; ///< Amount of dough in stock.
+            size_t tomato; ///< Amount of tomato in stock.
+            size_t gruyere; ///< Amount of gruyere in stock.
+            size_t ham; ///< Amount of ham in stock.
+            size_t mushroom; ///< Amount of mushroom in stock.
+            size_t steak; ///< Amount of steak in stock.
+            size_t eggplant; ///< Amount of eggplant in stock.
+            size_t goatCheese; ///< Amount of goat cheese in stock.
+            size_t chiefLove; ///< Amount of chief love in stock.
 
+        private:
             /**
              * @brief Map for storing the ingredients required for each type of pizza.
              */
@@ -127,11 +125,17 @@ class Kitchen {
                 {Fantasia, {{Dough, 1}, {Tomato, 1}, {Eggplant, 1}, {Goatcheese, 1}, {ChiefLove, 1}}}
             };
         };
+
         size_t _nbCooks; ///< Number of cooks.
-        size_t _commandNumber; ///< Number of commands.
-        std::list<std::thread> _cooks; ///< List of cook threads.
-        size_t _timeToRestock; ///< Time to restock ingredients.
+        std::vector<std::thread> _cooks; ///< List of cook threads.
         Stock _stock; ///< Stock of ingredients.
+
+        size_t _id; ///< ID of the kitchen.
+        std::vector<std::string> _waitingCommands; ///< List of waiting commands.
+        std::vector<std::string> _inProgressCommands; ///< List of commands in progress.
+
+        std::chrono::system_clock::time_point _lastRestock; ///< Time of the last restock.
+        size_t _timeToRestock; ///< Time to restock ingredients.
 
         /**
          * @brief Message queue for receiving commands.
@@ -142,4 +146,31 @@ class Kitchen {
          * @brief Thread for receiving commands.
          */
         MessageQueueIPC<std::string> _receptionQueue;
+
+        /**
+         * @brief Checks if there are available commands.
+         * @return true if commands are available, false otherwise.
+         */
+        bool commandAreAvailable();
+
+        /**
+         * @brief Creates a new cook.
+         */
+        void createCook();
+
+        /**
+         * @brief Handles the commands.
+         * @note This method transfers the commands from the message queue to the command buffer.
+         */
+        void handleCommands();
+
+        /**
+         * @brief Manage the cook threads.
+         */
+        void manageCooks();
+
+        /**
+         * @brief Conveys the status of the kitchen to the reception.
+         */
+        void status();
 };
