@@ -10,7 +10,7 @@
 #include <string>
 
 Cook::Cook(std::shared_ptr<MessageQueueThread<std::string>> messageQueue) :
-        _messageQueue(messageQueue), _thread(), _pizzaType(Plazza::NONE), _status(WAITING) {}
+        _messageQueue(messageQueue), _thread(&Cook::cookRoutine, this, messageQueue), _pizzaType(Plazza::NONE), _status(WAITING) {}
 
 void Cook::cookRoutine(std::shared_ptr<MessageQueueThread<std::string>> messageQueue)
 {
