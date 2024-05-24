@@ -37,7 +37,6 @@ void Plazza::Reception::createKitchen()
 {
     _kitchenQueues.emplace_back(_kitchenUid);
     _kitchenQueues.back().reset();
-    std::cout << _kitchenQueues.back().size() << std::endl;
     _kitchenUid++;
 
     int pid = fork();
