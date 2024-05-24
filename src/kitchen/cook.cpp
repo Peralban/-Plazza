@@ -33,4 +33,3 @@ Cook::~Cook()
 {
     _thread.join();
 }
-
