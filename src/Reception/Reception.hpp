@@ -48,13 +48,10 @@ namespace Plazza {
 
     private:
         Arguments _args; /**< The arguments for configuring the reception. */
+
         MessageQueueIPC<std::string> _receiverQueue; /**< The message queue for receiving orders. */
         std::vector<MessageQueueIPC<std::string>> _kitchenQueues; /**< The message queues for sending orders to kitchens. */
 
-        /**
-         * @brief Gets the index of an available kitchen.
-         * @return The index of an available kitchen, or -1 if no kitchen is available.
-         */
-        int getAvailableKitchen();
+        int _kitchenUid = 2; /**< The unique ID of the kitchen. */
     };
 }
