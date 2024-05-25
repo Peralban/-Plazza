@@ -67,6 +67,13 @@ class Cook {
          */
         Plazza::PizzaType getPizzaType() { return _pizzaType; }
 
+        /**
+         * @brief Get the size of the pizza that the Cook is currently cooking.
+         *
+         * @return The size of the pizza.
+         */
+        Plazza::PizzaSize getPizzaSize() { return _pizzaSize; }
+
     protected:
     private:
         std::shared_ptr<MessageQueueThread<std::string>> _messageQueue; ///< The message queue for communication.
