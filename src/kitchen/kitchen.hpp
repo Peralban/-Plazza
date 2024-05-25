@@ -28,7 +28,7 @@ class Kitchen {
         /**
          * @brief Constructor for the Kitchen class.
          */
-        Kitchen(size_t nbCooks, size_t timeToRestock, size_t multi, std::shared_ptr<MessageQueueIPC<std::string>> kitchenQueue, std::shared_ptr<MessageQueueIPC<std::string>> receptionQueue);
+        Kitchen(size_t nbCooks, size_t timeToRestock, double multi, std::shared_ptr<MessageQueueIPC<std::string>> kitchenQueue, std::shared_ptr<MessageQueueIPC<std::string>> receptionQueue);
 
         /**
          * @brief Destructor for the Kitchen class.
@@ -129,7 +129,7 @@ class Kitchen {
         size_t _commandNumber; ///< Number of commands.
         std::vector<std::shared_ptr<Cook>> _cooks; ///< Vector of cooks.
         size_t _timeToRestock; ///< Time to restock ingredients.
-        size_t _multi; ///< Multiplier for cooking time.
+        double _multi; ///< Multiplier for cooking time.
         Stock _stock; ///< Stock of ingredients.
         bool _clockIsRunning; ///< Flag for the clock status.
         std::chrono::system_clock::time_point _startClock; ///< Start time of the clock.

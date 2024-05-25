@@ -38,8 +38,9 @@ class Cook {
          * @brief Construct a new Cook object.
          *
          * @param messageQueue The message queue for communication.
+         * @param timeToCookMultiplier The time multiplier for cooking.
          */
-        Cook(std::shared_ptr<MessageQueueThread<std::string>> messageQueue);
+        Cook(std::shared_ptr<MessageQueueThread<std::string>> messageQueue, double timeToCookMultiplier);
 
         /**
          * @brief Destroy the Cook object.
@@ -81,4 +82,5 @@ class Cook {
         Plazza::PizzaType _pizzaType; ///< The type of the pizza that the Cook is currently cooking.
         Plazza::PizzaSize _pizzaSize; ///< The size of the pizza that the Cook is currently cooking.
         status _status; ///< The current status of the Cook.
+        double _timeToCookMultiplier; ///< The time multiplier for cooking.
 };

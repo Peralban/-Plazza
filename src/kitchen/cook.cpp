@@ -9,8 +9,8 @@
 #include "kitchen.hpp"
 #include <string>
 
-Cook::Cook(std::shared_ptr<MessageQueueThread<std::string>> messageQueue) :
-        _messageQueue(messageQueue), _thread(&Cook::cookRoutine, this, messageQueue), _pizzaType(Plazza::NONE), _status(WAITING) {}
+Cook::Cook(std::shared_ptr<MessageQueueThread<std::string>> messageQueue, double timeToCookMultiplier) :
+    _messageQueue(messageQueue), _thread(&Cook::cookRoutine, this, messageQueue), _pizzaType(Plazza::NONE), _status(WAITING), _timeToCookMultiplier(timeToCookMultiplier) {}
 
 void Cook::cookRoutine(std::shared_ptr<MessageQueueThread<std::string>> messageQueue)
 {
@@ -25,7 +25,7 @@ void Cook::cookRoutine(std::shared_ptr<MessageQueueThread<std::string>> messageQ
             _pizzaType = pizzaType;
             _pizzaSize = pizzaSize;
             std::cout << "Cooking pizza" << std::endl;
-            std::this_thread::sleep_for(std::chrono::seconds(pizzaType));
+            std::this_thread::sleep_for(std::chrono::duration<double>(pizzaType * _timeToCookMultiplier));
             std::cout << "Pizza : " << pizzaType << " is ready" << std::endl;
             _status = WAITING;
             _pizzaType = Plazza::NONE;

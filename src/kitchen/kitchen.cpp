@@ -8,13 +8,13 @@
 #include "kitchen.hpp"
 #include "cook.hpp"
 
-Kitchen::Kitchen(size_t nbCooks, size_t timeToRestock, size_t multi, std::shared_ptr<MessageQueueIPC<std::string>> kitchenQueue, std::shared_ptr<MessageQueueIPC<std::string>> receptionQueue)
+Kitchen::Kitchen(size_t nbCooks, size_t timeToRestock, double multi, std::shared_ptr<MessageQueueIPC<std::string>> kitchenQueue, std::shared_ptr<MessageQueueIPC<std::string>> receptionQueue)
     : _nbCooks(nbCooks), _commandNumber(0), _timeToRestock(timeToRestock), _multi(multi), _clockIsRunning(false), _kitchenQueue(kitchenQueue), _receptionQueue(receptionQueue)
 {
     _stock = Stock();
     _messageQueue = std::make_shared<MessageQueueThread<std::string>>();
     for (size_t i = 0; i < nbCooks; i++)
-        _cooks.push_back(std::make_shared<Cook>(_messageQueue));
+        _cooks.push_back(std::make_shared<Cook>(_messageQueue, _multi));
 }
 
 Kitchen::~Kitchen() {}
