@@ -19,7 +19,7 @@ void Cook::cookRoutine(std::shared_ptr<MessageQueueThread<std::string>> messageQ
             continue;
         std::string message = messageQueue->pop();
         Plazza::PizzaType pizzaType = static_cast<Plazza::PizzaType>(std::stoi(message.substr(0, message.find(' '))));
-        Plazza::PizzaSize pizzaSize = static_cast<Plazza::PizzaSize>(std::stoi(message.find(' ') + 1));
+        Plazza::PizzaSize pizzaSize = static_cast<Plazza::PizzaSize>(std::stoi(message.substr(message.find(' ') + 1)));
         if (pizzaType == Plazza::Margarita || pizzaType == Plazza::Regina || pizzaType == Plazza::Americana || pizzaType == Plazza::Fantasia) {
             _status = COOKING;
             _pizzaType = pizzaType;
