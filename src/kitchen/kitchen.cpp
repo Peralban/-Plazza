@@ -9,11 +9,12 @@
 #include <regex>
 
 Kitchen::Kitchen(size_t nbCooks, size_t time, double multiplier, size_t id):
-    _nbCooks(nbCooks), _timeToRestock(time), _multiplier(multiplier), _id(id),
-    _kitchenQueue(id), _receptionQueue(1)
+    _nbCooks(nbCooks), _timeToRestock(time), _multiplier(multiplier), _id(id), _kitchenQueue(id), _receptionQueue(1)
 {
-    for (size_t i = 0; i < nbCooks; i++)
-        _cooks.push_back(Cook(std::ref(_cooksQueue[i]), multiplier));
+    for (size_t i = 0; i < nbCooks; i++) {
+        std::shared_ptr<Cook> cook = std::make_shared<Cook>(std::ref(_cooksQueue[i]), multiplier);
+        _cooks.push_back(cook);
+    }
     _stock = Stock();
     _lastRestock = std::chrono::system_clock::now();
 }
@@ -155,9 +156,9 @@ void Kitchen::status()
     std::cout << "Number of cooks: " << _nbCooks << std::endl;
     for (size_t i = 0; i < _cooks.size(); i++) {
         std::cout << "Cook " << i << " is ";
-        if (_cooks[i].getStatus() == Cook::WAITING)
+        if (_cooks[i]->getStatus() == Cook::WAITING)
             std::cout << "waiting" << std::endl;
-        else if (_cooks[i].getStatus() == Cook::COOKING)
+        else if (_cooks[i]->getStatus() == Cook::COOKING)
             std::cout << "cooking" << std::endl;
     }
     _receptionQueue.push("SOK" + std::to_string(_id));
@@ -167,7 +168,7 @@ void Kitchen::manageWaitingCommands()
 {
     for (size_t i = 0; i < _cooks.size(); i++) {
         for (size_t j = 0; j < _waitingCommands.size(); j++) {
-            if (_cooks[i].getStatus() == Cook::WAITING) {
+            if (_cooks[i]->getStatus() == Cook::WAITING) {
                 _cooksQueue[i].push(_waitingCommands[j]);
                 _waitingCommands.erase(_waitingCommands.begin() + j);
                 break;
@@ -176,11 +177,12 @@ void Kitchen::manageWaitingCommands()
     }
 }
 
+
 size_t Kitchen::getNbCooksWorking()
 {
     size_t nb = 0;
     for (size_t i = 0; i < _cooks.size(); i++) {
-        if (_cooks[i].getStatus() == Cook::COOKING)
+        if (_cooks[i]->getStatus() == Cook::COOKING)
             nb++;
     }
     return nb;

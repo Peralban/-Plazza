@@ -16,6 +16,7 @@
 #include <map>
 #include <unordered_map>
 #include <functional>
+#include <memory>
 
 /**
  * @brief Represents a pair of values, where the first value is of type Plazza::PizzaType and the second value is of type Plazza::PizzaSize.
@@ -133,7 +134,7 @@ private:
     std::chrono::system_clock::time_point _lastRestock; ///< Time of the last restock.
     std::chrono::system_clock::time_point _startClock; ///< Time of the last restock.
     Stock _stock; ///< Stock of ingredients.
-    std::vector<Cook> _cooks; ///< Vector of cooks.
+    std::vector<std::shared_ptr<Cook>> _cooks; ///< Vector of cooks.
 
     // Command management
     std::vector<std::string> _waitingCommands; ///< List of waiting commands.
