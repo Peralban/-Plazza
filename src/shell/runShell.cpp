@@ -6,17 +6,15 @@
 */
 
 #include "shellParser.hpp"
-#include "messageQueue/messageQueueIPC.hpp"
+#include "Reception/Reception.hpp"
 
-static std::string parseOrder(std::string order)
+static Plazza::command_t parseOrder(std::string order)
 {
-    std::string type;
-    std::string size;
-    std::string number;
+    Plazza::command_t command;
 
     for (auto &pizzatype : Plazza::pizzaTypesMap)
         if (order.find(pizzatype.first) != std::string::npos) {
-            type = std::to_string(pizzatype.second);
+            command.type = pizzatype.second;
             order = &order[pizzatype.first.size()];
         }
     if (order[0] == ' ')
@@ -25,7 +23,7 @@ static std::string parseOrder(std::string order)
         throw std::runtime_error("Invalid pizza type");
     for (auto &pizzasize : Plazza::pizzaSizesMap)
         if (order.find(pizzasize.first) != std::string::npos) {
-            size = std::to_string(pizzasize.second);
+            command.size = pizzasize.second;
             order = &order[pizzasize.first.size()];
         }
     if (order[0] == ' ')
@@ -36,8 +34,8 @@ static std::string parseOrder(std::string order)
         order = &order[1];
     else
         throw std::runtime_error("Invalid pizza number");
-    number = order;
-    return type + " " + size + " " + number;
+    command.number = std::stoi(order);
+    return command;
 }
 
 int Shell::run(Plazza::Reception &reception)
