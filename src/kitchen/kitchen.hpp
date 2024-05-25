@@ -7,17 +7,15 @@
 
 #pragma once
 
+#include "cook.hpp"
+#include "messageQueue/messageQueueIPC.hpp"
+
 #include <iostream>
-#include <list>
+#include <vector>
 #include <thread>
 #include <map>
 #include <unordered_map>
 #include <functional>
-#include <queue>
-#include <chrono>
-#include "Arguments/Arguments.hpp"
-#include "messageQueue/messageQueueIPC.hpp"
-#include "messageQueue/messageQueueThread.hpp"
 
 /**
  * @brief Represents a pair of values, where the first value is of type Plazza::PizzaType and the second value is of type Plazza::PizzaSize.
@@ -133,7 +131,9 @@ private:
 
     // Cook management
     std::chrono::system_clock::time_point _lastRestock; ///< Time of the last restock.
+    std::chrono::system_clock::time_point _startClock; ///< Time of the last restock.
     Stock _stock; ///< Stock of ingredients.
+    std::vector<Cook> _cooks; ///< Vector of cooks.
 
     // Command management
     std::vector<std::string> _waitingCommands; ///< List of waiting commands.
@@ -180,5 +180,11 @@ private:
      * @brief Gets the number of cooks currently working.
      * @return The number of cooks working.
      */
-    size_t getNbCooksWorking() const;
+    size_t getNbCooksWorking();
+
+    /**
+     * @brief Starts the kitchen.
+     * @return true if the kitchen is running, false if the kitchen has to be closed.
+     */
+    bool update();
 };

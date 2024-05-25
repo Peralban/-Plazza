@@ -21,16 +21,33 @@ Plazza::Reception::~Reception()
     }
 }
 
-void Plazza::Reception::addOrder(const std::string &order)
+static bool waitConfirmation(int id, MessageQueueIPC<std::string> &receiverQueue)
 {
-    for (auto &kitchenQueue : _kitchenQueues) {
-        if (kitchenQueue.size() < _args.getCookNumber() * 2) {
-            kitchenQueue.push(order);
-            return;
+    while (1) {
+        for (int i = 0; i < receiverQueue.size(); i++) {
+            std::string message = receiverQueue[i];
+            if (message == ("COK" + std::to_string(id)))
+                return true;
+            if (message == ("CKO" + std::to_string(id)))
+                return false;
         }
     }
-    createKitchen();
-    _kitchenQueues.back().push(order);
+}
+
+void Plazza::Reception::addOrder(command_t order)
+{
+    for (int i = 0; i < order.number; i++) {
+        std::string pizzaOrder = std::to_string(order.type) + " " + std::to_string(order.size);
+        for (auto &kitchenQueue : _kitchenQueues) {
+            kitchenQueue.push(pizzaOrder);
+            int id = kitchenQueue.getID();
+            if (waitConfirmation(id, _receiverQueue)) {
+                continue;
+            }
+        }
+        createKitchen();
+        _kitchenQueues.back().push(pizzaOrder);
+    }
 }
 
 void Plazza::Reception::createKitchen()
@@ -45,5 +62,26 @@ void Plazza::Reception::createKitchen()
         //kitchen.run();
         std::cout << "Kitchen created" << std::endl;
         exit(0);
+    }
+}
+
+static void wait_status(int id, MessageQueueIPC<std::string> &receiverQueue)
+{
+    while (1) {
+        for (int i = 0; i < receiverQueue.size(); i++) {
+            std::string message = receiverQueue[i];
+            if (message == ("SOK" + std::to_string(id))) {
+                return;
+            }
+        }
+    }
+}
+
+void Plazza::Reception::getStatus()
+{
+    for (auto &kitchenQueue : _kitchenQueues) {
+        kitchenQueue.push("status");
+        int id = kitchenQueue.getID();
+        wait_status(id, _receiverQueue);
     }
 }

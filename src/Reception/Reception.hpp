@@ -16,6 +16,17 @@
 #include <string>
 
 namespace Plazza {
+
+    /**
+     * @brief The command structure represents a command.
+     * The command structure contains the type, size and number of the command.
+     */
+    typedef struct command_s {
+        int type;
+        int size;
+        int number;
+    } command_t;
+
     /**
      * @class Reception
      * @brief The Reception class represents the reception area of a restaurant.
@@ -39,7 +50,12 @@ namespace Plazza {
          * @brief Adds an order to the reception.
          * @param order The order to be added.
          */
-        void addOrder(const std::string &order);
+        void addOrder(command_t order);
+
+        /**
+         * @brief Gets and print the status of the reception.
+         */
+        void getStatus();
 
         /**
          * @brief Creates a new kitchen and adds it to the list of kitchens.

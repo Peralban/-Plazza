@@ -12,9 +12,8 @@ Kitchen::Kitchen(size_t nbCooks, size_t time, double multiplier, size_t id):
     _nbCooks(nbCooks), _timeToRestock(time), _multiplier(multiplier), _id(id),
     _kitchenQueue(id), _receptionQueue(1)
 {
-    for (size_t i = 0; i < nbCooks; i++) {
-        // _cooks.push_back(Cook(std::ref(_cooksQueue[i]), _multiplier));
-    }
+    for (size_t i = 0; i < nbCooks; i++)
+        _cooks.push_back(Cook(std::ref(_cooksQueue[i]), multiplier));
     _stock = Stock();
     _lastRestock = std::chrono::system_clock::now();
 }
@@ -77,6 +76,7 @@ void Kitchen::Stock::takeIngredient(Plazza::PizzaType pizza)
     goatCheese -= _pizzaIngredients[pizza][Goatcheese];
     chiefLove -= _pizzaIngredients[pizza][ChiefLove];
 }
+
 Pizza Kitchen::Stock::getPizzaFromString(const std::string &pizza)
 {
     std::regex pizzaRegex("^\\d*\\s\\d*$");
@@ -153,35 +153,53 @@ void Kitchen::status()
     std::cout << "\tChief Love: " << _stock.chiefLove << std::endl;
     std::cout << "Number of commands: " << _waitingCommands.size() + getNbCooksWorking() << std::endl;
     std::cout << "Number of cooks: " << _nbCooks << std::endl;
-    // for (size_t i = 0; i < _cooks.size(); i++) {
-    //     std::cout << "Cook " << i << " is ";
-    //     if (_cooks[i].getStatus() == Cook::WAITING)
-    //         std::cout << "waiting" << std::endl;
-    //     else if (_cooks[i].getStatus() == Cook::COOKING)
-    //         std::cout << "cooking" << std::endl;
-    // }
+    for (size_t i = 0; i < _cooks.size(); i++) {
+        std::cout << "Cook " << i << " is ";
+        if (_cooks[i].getStatus() == Cook::WAITING)
+            std::cout << "waiting" << std::endl;
+        else if (_cooks[i].getStatus() == Cook::COOKING)
+            std::cout << "cooking" << std::endl;
+    }
     _receptionQueue.push("SOK" + std::to_string(_id));
 }
 
 void Kitchen::manageWaitingCommands()
 {
-    // for (size_t i = 0; i < _cooks.size(); i++) {
-    //     for (size_t j = 0; j < _waitingCommands.size(); j++) {
-    //         if (_cooks[i].getStatus() == Cook::WAITING) {
-    //             _cooksQueue[i].push(_waitingCommands[j]);
-    //             _waitingCommands.erase(_waitingCommands.begin() + j);
-    //             break;
-    //         }
-    //     }
-    // }
+    for (size_t i = 0; i < _cooks.size(); i++) {
+        for (size_t j = 0; j < _waitingCommands.size(); j++) {
+            if (_cooks[i].getStatus() == Cook::WAITING) {
+                _cooksQueue[i].push(_waitingCommands[j]);
+                _waitingCommands.erase(_waitingCommands.begin() + j);
+                break;
+            }
+        }
+    }
 }
 
-size_t Kitchen::getNbCooksWorking() const
+size_t Kitchen::getNbCooksWorking()
 {
     size_t nb = 0;
-    // for (size_t i = 0; i < _cooks.size(); i++) {
-    //     if (_cooks[i].getStatus() == Cook::COOKING)
-    //         nb++;
-    // }
+    for (size_t i = 0; i < _cooks.size(); i++) {
+        if (_cooks[i].getStatus() == Cook::COOKING)
+            nb++;
+    }
     return nb;
+}
+
+bool Kitchen::update()
+{
+    size_t workingCooks = getNbCooksWorking();
+
+    if (!workingCooks) {
+        if (_startClock == std::chrono::system_clock::time_point())
+            _startClock = std::chrono::system_clock::now();
+        else {
+            auto end = std::chrono::system_clock::now();
+            std::chrono::duration<double> elapsed_seconds = end - _startClock;
+            if (elapsed_seconds.count() >= 5)
+                return false;
+        }
+    } else
+        _startClock = std::chrono::system_clock::time_point();
+    return true;
 }
