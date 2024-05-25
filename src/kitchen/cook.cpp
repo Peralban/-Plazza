@@ -23,6 +23,7 @@ void Cook::cookRoutine(std::shared_ptr<MessageQueueThread<std::string>> messageQ
         if (pizzaType == Plazza::Margarita || pizzaType == Plazza::Regina || pizzaType == Plazza::Americana || pizzaType == Plazza::Fantasia) {
             _status = COOKING;
             _pizzaType = pizzaType;
+            _pizzaSize = pizzaSize;
             std::cout << "Cooking pizza" << std::endl;
             std::this_thread::sleep_for(std::chrono::seconds(pizzaType));
             std::cout << "Pizza : " << pizzaType << " is ready" << std::endl;

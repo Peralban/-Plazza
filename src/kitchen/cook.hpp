@@ -34,6 +34,7 @@ class Cook {
     private:
         std::shared_ptr<MessageQueueThread<std::string>> _messageQueue;
         std::thread _thread;
-        Plazza::PizzaType _pizzaType; // will be changed with future enum
+        Plazza::PizzaType _pizzaType;
+        Plazza::PizzaSize _pizzaSize;
         status _status;
 };
