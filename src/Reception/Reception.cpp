@@ -48,9 +48,23 @@ void Plazza::Reception::createKitchen()
     }
 }
 
+static void wait_status(int id, MessageQueueIPC<std::string> &receiverQueue)
+{
+    while (1) {
+        for (int i = 0; i < receiverQueue.size(); i++) {
+            std::string message = receiverQueue[i];
+            if (message == ("SOK" + std::to_string(id))) {
+                return;
+            }
+        }
+    }
+}
+
 void Plazza::Reception::getStatus()
 {
-    //for (auto &kitchenQueue : _kitchenQueues) {
-    //    std::cout << "Kitchen " << kitchenQueue.getID() - 1 << ": " << kitchenQueue.size() << " orders" << std::endl;
-    //}
+    for (auto &kitchenQueue : _kitchenQueues) {
+        kitchenQueue.push("status");
+        int id = kitchenQueue.getID();
+        wait_status(id, _receiverQueue);
+    }
 }
