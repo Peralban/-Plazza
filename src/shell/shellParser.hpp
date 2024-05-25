@@ -46,6 +46,7 @@ namespace Shell {
             NUMBER = 4,    /**< Represents a number token. */
             SEMICOLON = 8, /**< Represents a semicolon token. */
             END = 16,      /**< Represents an end token. */
+            STATUS = 32,   /**< Represents a status token. */
             INVALID = 0    /**< Represents an invalid token. */
         };
 
@@ -163,7 +164,8 @@ namespace Shell {
         Token parseType();
         Token parseSize();
         Token parseNumber();
-        std::vector<Token (Parser::*)()> _parsers = {&Parser::parseSemicolon, &Parser::parseSize, &Parser::parseNumber, &Parser::parseType};
+        Token parseStatus();
+        std::vector<Token (Parser::*)()> _parsers = {&Parser::parseSemicolon, &Parser::parseStatus, &Parser::parseSize, &Parser::parseNumber, &Parser::parseType};
     };
 
     /**
