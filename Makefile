@@ -12,6 +12,8 @@ SRC			=	main.cpp									\
 				shell/runShell.cpp							\
 				Arguments/Arguments.cpp						\
 				Reception/Reception.cpp						\
+				kitchen/kitchen.cpp							\
+				kitchen/cook.cpp							\
 
 
 TRUE_SRC 	= 	$(patsubst %,src/%, $(SRC))
