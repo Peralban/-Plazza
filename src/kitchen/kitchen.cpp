@@ -19,7 +19,7 @@ Kitchen::Kitchen(size_t nbCooks, size_t time, double multiplier, size_t id):
     _stock = Stock();
     _lastRestock = std::chrono::system_clock::now();
     _startClock = std::chrono::system_clock::time_point();
-    std::cout << "Kitchen " << id << ": created" << std::endl;
+    std::cout << "Kitchen " << id - 1 << ": created." << std::endl;
 }
 
 Kitchen::~Kitchen() {}
@@ -28,7 +28,7 @@ void Kitchen::run()
 {
     while (1) {
         if (!isEnd()) {
-            std::cout << "Kitchen " << _id << ": closed" << std::endl;
+            std::cout << "Kitchen " << _id - 1 << ": closed." << std::endl;
             _receptionQueue.push("Closing" + std::to_string(_id));
             return;
         }
@@ -114,10 +114,10 @@ void Kitchen::handleCommands()
             if (_stock.hasEnoughIngredient(pizza.first)) {
                 _stock.takeIngredient(pizza.first);
                 _waitingCommands.push_back(command);
-                std::cout << "Kitchen " << _id << ": Command " << command << " accepted" << std::endl;
+                std::cout << "Kitchen " << _id - 1 << ": Command " << Plazza::DisplayPizzaName.at(pizza.first) << " " << Plazza::DisplayPizzaSize.at(pizza.second) << " accepted." << std::endl;
                 _receptionQueue.push("COK" + std::to_string(_id));
             } else {
-                std::cout << "Kitchen " << _id << ": Command " << command << " denied" << std::endl;
+                std::cout << "Kitchen " << _id - 1 << ": Command " << Plazza::DisplayPizzaName.at(pizza.first) << " " << Plazza::DisplayPizzaSize.at(pizza.second) << " denied." << std::endl;
                 _receptionQueue.push("CKO" + std::to_string(_id));
             }
         } catch (std::exception &e) {

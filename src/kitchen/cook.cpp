@@ -20,12 +20,13 @@ void Cook::cookRoutine(MessageQueueThread<std::string> &messageQueue)
         Plazza::PizzaType pizzaType = static_cast<Plazza::PizzaType>(std::stoi(message.substr(0, message.find(' '))));
         Plazza::PizzaSize pizzaSize = static_cast<Plazza::PizzaSize>(std::stoi(message.substr(message.find(' ') + 1)));
         if (pizzaType == Plazza::Margarita || pizzaType == Plazza::Regina || pizzaType == Plazza::Americana || pizzaType == Plazza::Fantasia) {
+            std::cout << "Cook is cooking a pizza of type " << Plazza::DisplayPizzaName.at(pizzaType) << " and size " << Plazza::DisplayPizzaSize.at(pizzaSize) <<  "." << std::endl;
             _status = COOKING;
             _pizzaType = pizzaType;
             _pizzaSize = pizzaSize;
             std::cout << "Cooking pizza" << std::endl;
             std::this_thread::sleep_for(std::chrono::duration<double>(pizzaType * _timeToCookMultiplier));
-            std::cout << "Pizza : " << pizzaType << " is ready" << std::endl;
+            std::cout << "Pizza : " << Plazza::DisplayPizzaName.at(pizzaType) << " is ready !" << std::endl;
             _status = WAITING;
             _pizzaType = Plazza::NONE;
         }

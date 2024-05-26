@@ -10,6 +10,7 @@
 #include <iostream>
 #include "Errors/ArgumentsErrors.hpp"
 #include <map>
+#include <unordered_map>
 
 namespace Plazza {
 
@@ -42,6 +43,21 @@ namespace Plazza {
             {"L", Plazza::PizzaSize::L},
             {"XL", Plazza::PizzaSize::XL},
             {"XXL", Plazza::PizzaSize::XXL}
+    };
+
+    static const std::unordered_map<Plazza::PizzaType, std::string> DisplayPizzaName = {
+            {Plazza::Margarita, "Margarita"},
+            {Plazza::Regina, "Regina"},
+            {Plazza::Americana, "Americana"},
+            {Plazza::Fantasia,"Fantasia"}
+    };
+
+    static const std::unordered_map<Plazza::PizzaSize, std::string> DisplayPizzaSize = {
+            {Plazza::S, "S"},
+            {Plazza::M, "M"},
+            {Plazza::L, "L"},
+            {Plazza::XL, "XL"},
+            {Plazza::XXL, "XXL"}
     };
 
     /**
