@@ -66,7 +66,7 @@ class Cook {
          *
          * @param status The new status of the Cook.
          */
-        void setStatus(status status) { _status = status; }
+        void setStatus(status newStatus) { _status = newStatus; }
 
         /**
          * @brief Get the type of the pizza that the Cook is currently cooking.

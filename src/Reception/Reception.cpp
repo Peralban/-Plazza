@@ -71,9 +71,9 @@ void Plazza::Reception::addOrder(command_t order)
 
     for (int i = 0; i < order.number; i++) {
 
-        for (int i = 0; i < _kitchenQueues.size(); i++) {
-            if (!isKitchenAlive(_kitchenQueues[i].getID(), _receiverQueue, _receiverMessages)) {
-                removeKitchen(_kitchenQueues[i].getID());
+        for (size_t j = 0; j < _kitchenQueues.size(); j++) {
+            if (!isKitchenAlive(_kitchenQueues[j].getID(), _receiverQueue, _receiverMessages)) {
+                removeKitchen(_kitchenQueues[j].getID());
                 i--;
             }
         }
