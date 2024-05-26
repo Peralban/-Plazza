@@ -46,7 +46,7 @@ void Kitchen::run()
 /* ----------------- Stock ----------------- */
 
 Kitchen::Stock::Stock()
-    : dough(5), tomato(5), gruyere(5), ham(5), mushroom(5), steak(5), eggplant(5), goatCheese(5) {}
+    : dough(5), tomato(5), gruyere(5), ham(5), mushroom(5), steak(5), eggplant(5), goatCheese(5), chiefLove(5) {}
 
 Kitchen::Stock::~Stock() {}
 
