@@ -8,14 +8,17 @@
 #include "kitchen.hpp"
 #include <unistd.h>
 #include <regex>
+#include <unistd.h>
 
 Kitchen::Kitchen(size_t nbCooks, size_t time, double multiplier, size_t id):
     _nbCooks(nbCooks), _timeToRestock(time), _multiplier(multiplier), _id(id), _kitchenQueue((int)id), _receptionQueue(1)
 {
-    //for (size_t i = 0; i < nbCooks; i++) {
-    //    std::shared_ptr<Cook> cook = std::make_shared<Cook>(std::ref(_cooksQueue[i]), multiplier);
-    //    _cooks.push_back(cook);
-    //}
+    _cooksQueue = std::vector<MessageQueueThread<std::string>>(nbCooks);
+    for (size_t i = 0; i < nbCooks; i++) {
+        std::shared_ptr<Cook> cook = std::make_shared<Cook>(std::ref(_cooksQueue[i]), multiplier);
+        _cooks.push_back(cook);
+        usleep(100);
+    }
     _stock = Stock();
     _lastRestock = std::chrono::system_clock::now();
     _startClock = std::chrono::system_clock::time_point();
