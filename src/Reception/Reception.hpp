@@ -66,6 +66,7 @@ namespace Plazza {
         Arguments _args; /**< The arguments for configuring the reception. */
 
         MessageQueueIPC<std::string> _receiverQueue; /**< The message queue for receiving orders. */
+        std::vector<std::string> _receiverMessages; /**< The messages received by the reception. */
         std::vector<MessageQueueIPC<std::string>> _kitchenQueues; /**< The message queues for sending orders to kitchens. */
 
         int _kitchenUid = 2; /**< The unique ID of the kitchen. */

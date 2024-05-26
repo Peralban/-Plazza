@@ -9,26 +9,30 @@
 #include <regex>
 
 Kitchen::Kitchen(size_t nbCooks, size_t time, double multiplier, size_t id):
-    _nbCooks(nbCooks), _timeToRestock(time), _multiplier(multiplier), _id(id), _kitchenQueue(id), _receptionQueue(1)
+    _nbCooks(nbCooks), _timeToRestock(time), _multiplier(multiplier), _id(id), _kitchenQueue((int)id), _receptionQueue(1)
 {
-    for (size_t i = 0; i < nbCooks; i++) {
-        std::shared_ptr<Cook> cook = std::make_shared<Cook>(std::ref(_cooksQueue[i]), multiplier);
-        _cooks.push_back(cook);
-    }
+    //for (size_t i = 0; i < nbCooks; i++) {
+    //    std::shared_ptr<Cook> cook = std::make_shared<Cook>(std::ref(_cooksQueue[i]), multiplier);
+    //    _cooks.push_back(cook);
+    //}
     _stock = Stock();
-    _lastRestock = std::chrono::system_clock::now();
+    //_lastRestock = std::chrono::system_clock::now();
+    //_startClock = std::chrono::system_clock::time_point();
+    std::cout << "Kitchen " << id << ": created" << std::endl;
 }
 
 Kitchen::~Kitchen() {}
 
+#include <unistd.h>
+
 void Kitchen::run()
 {
     while (1) {
-        std::chrono::system_clock::time_point actualRestock = std::chrono::system_clock::now();
-        if (std::chrono::duration_cast<std::chrono::seconds>(actualRestock - _lastRestock).count() >= (long int)_timeToRestock) {
-            _stock.restock();
-            _lastRestock = actualRestock;
-        }
+        //std::chrono::system_clock::time_point actualRestock = std::chrono::system_clock::now();
+        //if (std::chrono::duration_cast<std::chrono::seconds>(actualRestock - _lastRestock).count() >= (long int)_timeToRestock) {
+        //    _stock.restock();
+        //    _lastRestock = actualRestock;
+        //}
         if (!_kitchenQueue.empty()) {
             try {
                 this->handleCommands();
@@ -36,7 +40,7 @@ void Kitchen::run()
                 throw std::runtime_error("Error while handling commands");
             }
         }
-        manageWaitingCommands();
+        //manageWaitingCommands();
     }
 }
 
@@ -78,38 +82,16 @@ void Kitchen::Stock::takeIngredient(Plazza::PizzaType pizza)
     chiefLove -= _pizzaIngredients[pizza][ChiefLove];
 }
 
-Pizza Kitchen::Stock::getPizzaFromString(const std::string &pizza)
+Pizza Kitchen::Stock::getPizzaFromString(std::string &pizza)
 {
-    std::regex pizzaRegex("^\\d*\\s\\d*$");
-    std::smatch match;
-    std::pair<Plazza::PizzaType, Plazza::PizzaSize> result;
+    std::cout << "Pizza: " << pizza << std::endl;
 
-    if (std::regex_match(pizza, match, pizzaRegex)) {
-        if (match[1].str() == "regina")
-            result.first = Plazza::PizzaType::Regina;
-        else if (match[1].str() == "margarita")
-            result.first = Plazza::PizzaType::Margarita;
-        else if (match[1].str() == "americana")
-            result.first = Plazza::PizzaType::Americana;
-        else if (match[1].str() == "fantasia")
-            result.first = Plazza::PizzaType::Fantasia;
-        else
-            throw std::runtime_error("Invalid pizza type");
-        if (match[2].str() == "S")
-            result.second = Plazza::PizzaSize::S;
-        else if (match[2].str() == "M")
-            result.second = Plazza::PizzaSize::M;
-        else if (match[2].str() == "L")
-            result.second = Plazza::PizzaSize::L;
-        else if (match[2].str() == "XL")
-            result.second = Plazza::PizzaSize::XL;
-        else if (match[2].str() == "XXL")
-            result.second = Plazza::PizzaSize::XXL;
-        else
-            throw std::runtime_error("Invalid pizza size");
-        return result;
-    }
-    throw std::runtime_error("Invalid pizza format");
+    Pizza result;
+
+    result.first = (Plazza::PizzaType)(std::stoi(pizza.substr(0, pizza.find(' '))));
+    result.second = (Plazza::PizzaSize)(std::stoi(pizza.substr(pizza.find(' ') + 1, pizza.length() - pizza.find(' ') - 1)));
+
+    return result;
 }
 
 /* -----------------/ Stock /----------------- */
@@ -126,13 +108,17 @@ void Kitchen::handleCommands()
         this->status();
     else {
         try {
+            std::cout << "Kitchen " << _id << ": Received command " << command << std::endl;
             Pizza pizza = _stock.getPizzaFromString(command);
             if (_stock.hasEnoughIngredient(pizza.first)) {
                 _stock.takeIngredient(pizza.first);
                 _waitingCommands.push_back(command);
+                std::cout << "Kitchen " << _id << ": Command " << command << " done" << std::endl;
                 _receptionQueue.push("COK" + std::to_string(_id));
-            } else
+            } else {
+                std::cout << "Kitchen " << _id << ": Command " << command << " failed" << std::endl;
                 _receptionQueue.push("CKO" + std::to_string(_id));
+            }
         } catch (std::exception &e) {
             throw std::runtime_error("Invalid pizza type");
         }

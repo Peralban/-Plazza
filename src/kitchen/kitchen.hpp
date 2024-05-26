@@ -100,7 +100,7 @@ private:
          * @param pizza The string representation of the pizza.
          * @return The Pizza object.
          */
-        Pizza getPizzaFromString(const std::string &pizza);
+        Pizza getPizzaFromString(std::string &pizza);
 
         size_t dough; ///< Amount of dough in stock.
         size_t tomato; ///< Amount of tomato in stock.

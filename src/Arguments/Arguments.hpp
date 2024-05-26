@@ -82,11 +82,11 @@ namespace Plazza {
          * @brief Gets the restock time.
          * @return The restock time.
          */
-        double getRestockTime() const;
+        int getRestockTime() const;
 
     private:
         double _multiplier; /**< The multiplier value. */
         int cookNumber; /**< The number of cooks. */
-        double restockTime; /**< The restock time. */
+        int restockTime; /**< The restock time. */
     };
 }

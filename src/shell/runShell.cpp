@@ -13,7 +13,7 @@ static Plazza::command_t parseOrder(std::string order)
     Plazza::command_t command;
 
     for (auto &pizzatype : Plazza::pizzaTypesMap)
-        if (order.find(pizzatype.first) != std::string::npos) {
+        if (order.substr(0, pizzatype.first.size()) == pizzatype.first) {
             command.type = pizzatype.second;
             order = &order[pizzatype.first.size()];
         }
@@ -22,7 +22,7 @@ static Plazza::command_t parseOrder(std::string order)
     else
         throw std::runtime_error("Invalid pizza type");
     for (auto &pizzasize : Plazza::pizzaSizesMap)
-        if (order.find(pizzasize.first) != std::string::npos) {
+        if (order.substr(0, pizzasize.first.size()) == pizzasize.first) {
             command.size = pizzasize.second;
             order = &order[pizzasize.first.size()];
         }
@@ -60,6 +60,7 @@ int Shell::run(Plazza::Reception &reception)
                 parser.eat(Token::NUMBER);
                 order += parser.current_token.getValue();
                 parser.eat((Token::Type)(Token::SEMICOLON | Token::END));
+                std::cout << "Order: " << order << std::endl;
                 reception.addOrder(parseOrder(order));
             }
             catch (std::runtime_error &e) {
