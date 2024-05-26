@@ -32,8 +32,8 @@ void Kitchen::run()
     while (1) {
         if (!isEnd()) {
             std::cout << "Kitchen " << _id - 1 << ": closed." << std::endl;
-            _receptionQueue.push("Closing" + std::to_string(_id));
-            return;
+            _receptionQueue.push("closing" + std::to_string(_id));
+            exit(0);
         }
         std::chrono::system_clock::time_point actualRestock = std::chrono::system_clock::now();
         if (std::chrono::duration_cast<std::chrono::milliseconds>(actualRestock - _lastRestock).count() >= (long int)_timeToRestock) {
@@ -109,6 +109,13 @@ bool Kitchen::commandAreAvailable()
 void Kitchen::handleCommands()
 {
     std::string command = _kitchenQueue.pop();
+    if (command == "closing") {
+        std::cout << "Kitchen " << _id - 1 << ": closed." << std::endl;
+        for (auto &cook : _cooks) {
+            cook->setStatus(Cook::UNEMPLOYED);
+        }
+        exit(0);
+    }
     if (command == "status")
         this->status();
     else {

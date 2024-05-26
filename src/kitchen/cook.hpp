@@ -30,7 +30,8 @@ class Cook {
          */
         enum status {
             COOKING, ///< The Cook is currently cooking a pizza.
-            WAITING  ///< The Cook is waiting for a new pizza order.
+            WAITING, ///< The Cook is waiting for a new pizza order.
+            UNEMPLOYED ///< The Cook is unemployed.
         };
 
         /**
@@ -59,6 +60,13 @@ class Cook {
          * @return The current status of the Cook.
          */
         status getStatus() { return _status; }
+
+        /**
+         * @brief Set the status of the Cook.
+         *
+         * @param status The new status of the Cook.
+         */
+        void setStatus(status status) { _status = status; }
 
         /**
          * @brief Get the type of the pizza that the Cook is currently cooking.

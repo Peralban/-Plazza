@@ -28,6 +28,9 @@ void Cook::cookRoutine(MessageQueueThread<std::string> &messageQueue)
             _pizzaType = pizzaType;
             _pizzaSize = pizzaSize;
             std::this_thread::sleep_for(std::chrono::duration<double>(pizzaType * _timeToCookMultiplier));
+            if (_status == UNEMPLOYED) {
+                return;
+            }
             std::cout << "Pizza : " << Plazza::DisplayPizzaName.at(pizzaType) << " is ready !" << std::endl;
             _status = WAITING;
             _pizzaType = Plazza::NONE;
