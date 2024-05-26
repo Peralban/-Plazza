@@ -6,6 +6,7 @@
 */
 
 #include "kitchen.hpp"
+#include <unistd.h>
 #include <regex>
 
 Kitchen::Kitchen(size_t nbCooks, size_t time, double multiplier, size_t id):
@@ -23,13 +24,11 @@ Kitchen::Kitchen(size_t nbCooks, size_t time, double multiplier, size_t id):
 
 Kitchen::~Kitchen() {}
 
-#include <unistd.h>
-
 void Kitchen::run()
 {
     while (1) {
         std::chrono::system_clock::time_point actualRestock = std::chrono::system_clock::now();
-        if (std::chrono::duration_cast<std::chrono::seconds>(actualRestock - _lastRestock).count() >= (long int)_timeToRestock) {
+        if (std::chrono::duration_cast<std::chrono::milliseconds>(actualRestock - _lastRestock).count() >= (long int)_timeToRestock) {
             _stock.restock();
             _lastRestock = actualRestock;
         }
@@ -159,7 +158,6 @@ void Kitchen::manageWaitingCommands()
         }
     }
 }
-
 
 size_t Kitchen::getNbCooksWorking()
 {
