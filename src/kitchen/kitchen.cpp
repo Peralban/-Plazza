@@ -121,7 +121,7 @@ void Kitchen::handleCommands()
     else {
         try {
             Pizza pizza = _stock.getPizzaFromString(command);
-            if (_stock.hasEnoughIngredient(pizza.first)) {
+            if (_stock.hasEnoughIngredient(pizza.first) && commandAreAvailable()) {
                 _stock.takeIngredient(pizza.first);
                 _waitingCommands.push_back(command);
                 std::cout << "Kitchen " << _id - 1 << ": Command " << Plazza::DisplayPizzaName.at(pizza.first) << " " << Plazza::DisplayPizzaSize.at(pizza.second) << " accepted." << std::endl;
