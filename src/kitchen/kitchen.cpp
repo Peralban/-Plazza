@@ -16,8 +16,8 @@ Kitchen::Kitchen(size_t nbCooks, size_t time, double multiplier, size_t id):
     //    _cooks.push_back(cook);
     //}
     _stock = Stock();
-    //_lastRestock = std::chrono::system_clock::now();
-    //_startClock = std::chrono::system_clock::time_point();
+    _lastRestock = std::chrono::system_clock::now();
+    _startClock = std::chrono::system_clock::time_point();
     std::cout << "Kitchen " << id << ": created" << std::endl;
 }
 
@@ -28,11 +28,11 @@ Kitchen::~Kitchen() {}
 void Kitchen::run()
 {
     while (1) {
-        //std::chrono::system_clock::time_point actualRestock = std::chrono::system_clock::now();
-        //if (std::chrono::duration_cast<std::chrono::seconds>(actualRestock - _lastRestock).count() >= (long int)_timeToRestock) {
-        //    _stock.restock();
-        //    _lastRestock = actualRestock;
-        //}
+        std::chrono::system_clock::time_point actualRestock = std::chrono::system_clock::now();
+        if (std::chrono::duration_cast<std::chrono::seconds>(actualRestock - _lastRestock).count() >= (long int)_timeToRestock) {
+            _stock.restock();
+            _lastRestock = actualRestock;
+        }
         if (!_kitchenQueue.empty()) {
             try {
                 this->handleCommands();
@@ -40,7 +40,7 @@ void Kitchen::run()
                 throw std::runtime_error("Error while handling commands");
             }
         }
-        //manageWaitingCommands();
+        manageWaitingCommands();
     }
 }
 
@@ -84,8 +84,6 @@ void Kitchen::Stock::takeIngredient(Plazza::PizzaType pizza)
 
 Pizza Kitchen::Stock::getPizzaFromString(std::string &pizza)
 {
-    std::cout << "Pizza: " << pizza << std::endl;
-
     Pizza result;
 
     result.first = (Plazza::PizzaType)(std::stoi(pizza.substr(0, pizza.find(' '))));
@@ -108,15 +106,14 @@ void Kitchen::handleCommands()
         this->status();
     else {
         try {
-            std::cout << "Kitchen " << _id << ": Received command " << command << std::endl;
             Pizza pizza = _stock.getPizzaFromString(command);
             if (_stock.hasEnoughIngredient(pizza.first)) {
                 _stock.takeIngredient(pizza.first);
                 _waitingCommands.push_back(command);
-                std::cout << "Kitchen " << _id << ": Command " << command << " done" << std::endl;
+                std::cout << "Kitchen " << _id << ": Command " << command << " accepted" << std::endl;
                 _receptionQueue.push("COK" + std::to_string(_id));
             } else {
-                std::cout << "Kitchen " << _id << ": Command " << command << " failed" << std::endl;
+                std::cout << "Kitchen " << _id << ": Command " << command << " denied" << std::endl;
                 _receptionQueue.push("CKO" + std::to_string(_id));
             }
         } catch (std::exception &e) {

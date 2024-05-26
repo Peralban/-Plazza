@@ -78,17 +78,6 @@ public:
     }
 
     /**
-     * @brief Pops a message from the message queue at index.
-     * @return The popped message.
-     */
-    //T pop(int index)
-    //{
-    //    message_buf buf = {};
-    //    msgrcv(_msg_id, &buf, sizeof(buf.mtext), index, IPC_NOWAIT);
-    //    return T(buf.mtext);
-    //}
-
-    /**
      * @brief Gets the message at the front of the queue without removing it.
      * @return The message at the front of the queue.
      */
@@ -98,17 +87,6 @@ public:
         msgrcv(_msg_id, &buf, sizeof(buf.mtext), 0, MSG_COPY | IPC_NOWAIT);
         return T(buf.mtext);
     }
-
-    /**
-     * @brief Gets the message at the specified index without removing it.
-     * @return The message at the front of the queue.
-     */
-    //[[nodiscard]] T operator[](int index)
-    //{
-    //    message_buf buf = {};
-    //    msgrcv(_msg_id, &buf, sizeof(buf.mtext), index, MSG_COPY | IPC_NOWAIT);
-    //    return T(buf.mtext);
-    //}
 
     /**
      * @brief Checks if the message queue is empty.
