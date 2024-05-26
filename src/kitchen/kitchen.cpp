@@ -123,7 +123,7 @@ void Kitchen::handleCommands()
 
 void Kitchen::status()
 {
-    std::cout << "Kitchen of id: " << _id << ": " << std::endl;
+    std::cout << "Kitchen " << _id << ": " << std::endl;
     std::cout << "Stock: " << std::endl;
     std::cout << "\tDough: " << _stock.dough << std::endl;
     std::cout << "\tTomato: " << _stock.tomato << std::endl;
