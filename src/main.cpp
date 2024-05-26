@@ -15,7 +15,7 @@ static void displayUsage()
     std::cout << "USAGE: ./plazza multiplier cooks restock_time" << std::endl;
     std::cout << "\tmultiplier: positive float" << std::endl;
     std::cout << "\tcooks: positive integer" << std::endl;
-    std::cout << "\trestock_time: positive float" << std::endl;
+    std::cout << "\trestock_time: positive integer" << std::endl;
 }
 
 int main(int ac, char **av)
