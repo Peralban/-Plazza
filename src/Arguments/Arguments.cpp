@@ -16,7 +16,7 @@ Plazza::Arguments::Arguments(int ac, char **av)
             throw Errors::WrongMultiplier("Invalid multiplier");
         } if (std::stoi(av[2]) <= 0) {
             throw Errors::WrongCookNumber("Invalid number of cooks");
-        } if (std::stof(av[3]) <= 0) {
+        } if (std::stoi(av[3]) <= 0) {
             throw Errors::WrongRestockTime("Invalid restock time");
         }
     } catch (const std::exception &e) {
@@ -24,7 +24,7 @@ Plazza::Arguments::Arguments(int ac, char **av)
     }
     _multiplier = std::stof(av[1]);
     cookNumber = std::stoi(av[2]);
-    restockTime = std::stof(av[3]);
+    restockTime = std::stoi(av[3]);
 }
 
 Plazza::Arguments::Arguments(const Arguments &other)
@@ -44,7 +44,7 @@ int Plazza::Arguments::getCookNumber() const
     return cookNumber;
 }
 
-double Plazza::Arguments::getRestockTime() const
+int Plazza::Arguments::getRestockTime() const
 {
     return restockTime;
 }

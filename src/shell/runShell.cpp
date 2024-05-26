@@ -13,7 +13,7 @@ static Plazza::command_t parseOrder(std::string order)
     Plazza::command_t command;
 
     for (auto &pizzatype : Plazza::pizzaTypesMap)
-        if (order.find(pizzatype.first) != std::string::npos) {
+        if (order.substr(0, pizzatype.first.size()) == pizzatype.first) {
             command.type = pizzatype.second;
             order = &order[pizzatype.first.size()];
         }
@@ -22,7 +22,7 @@ static Plazza::command_t parseOrder(std::string order)
     else
         throw std::runtime_error("Invalid pizza type");
     for (auto &pizzasize : Plazza::pizzaSizesMap)
-        if (order.find(pizzasize.first) != std::string::npos) {
+        if (order.substr(0, pizzasize.first.size()) == pizzasize.first) {
             command.size = pizzasize.second;
             order = &order[pizzasize.first.size()];
         }
@@ -30,7 +30,7 @@ static Plazza::command_t parseOrder(std::string order)
         order = &order[1];
     else
         throw std::runtime_error("Invalid pizza size");
-    if (order[0] == 'x')
+    if (order[0] == 'x' && std::isdigit(order[1]))
         order = &order[1];
     else
         throw std::runtime_error("Invalid pizza number");

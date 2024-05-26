@@ -10,6 +10,7 @@
 #include <iostream>
 #include "Errors/ArgumentsErrors.hpp"
 #include <map>
+#include <unordered_map>
 
 namespace Plazza {
 
@@ -42,6 +43,21 @@ namespace Plazza {
             {"L", Plazza::PizzaSize::L},
             {"XL", Plazza::PizzaSize::XL},
             {"XXL", Plazza::PizzaSize::XXL}
+    };
+
+    static const std::unordered_map<Plazza::PizzaType, std::string> DisplayPizzaName = {
+            {Plazza::Margarita, "Margarita"},
+            {Plazza::Regina, "Regina"},
+            {Plazza::Americana, "Americana"},
+            {Plazza::Fantasia,"Fantasia"}
+    };
+
+    static const std::unordered_map<Plazza::PizzaSize, std::string> DisplayPizzaSize = {
+            {Plazza::S, "S"},
+            {Plazza::M, "M"},
+            {Plazza::L, "L"},
+            {Plazza::XL, "XL"},
+            {Plazza::XXL, "XXL"}
     };
 
     /**
@@ -82,11 +98,11 @@ namespace Plazza {
          * @brief Gets the restock time.
          * @return The restock time.
          */
-        double getRestockTime() const;
+        int getRestockTime() const;
 
     private:
         double _multiplier; /**< The multiplier value. */
         int cookNumber; /**< The number of cooks. */
-        double restockTime; /**< The restock time. */
+        int restockTime; /**< The restock time. */
     };
 }
