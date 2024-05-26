@@ -60,7 +60,6 @@ int Shell::run(Plazza::Reception &reception)
                 parser.eat(Token::NUMBER);
                 order += parser.current_token.getValue();
                 parser.eat((Token::Type)(Token::SEMICOLON | Token::END));
-                std::cout << "Order: " << order << std::endl;
                 reception.addOrder(parseOrder(order));
             }
             catch (std::runtime_error &e) {
