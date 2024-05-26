@@ -54,22 +54,24 @@ void Plazza::Reception::addOrder(command_t order)
     for (int i = 0; i < order.number; i++) {
         bool needNewKitchen = true;
         std::string pizzaOrder = std::to_string(order.type) + " " + std::to_string(order.size);
-        std::cout << "Reception: Adding order " << pizzaOrder << std::endl;
+        std::string displayPizzaName = Plazza::DisplayPizzaName.at((Plazza::PizzaType)order.type);
+        std::string displayPizzaSize = Plazza::DisplayPizzaSize.at((Plazza::PizzaSize)order.size);
+        std::cout << "Reception: Adding order " << displayPizzaName << " " << displayPizzaSize <<  "." << std::endl;
         for (auto &kitchenQueue : _kitchenQueues) {
             kitchenQueue.push(pizzaOrder);
             int id = kitchenQueue.getID();
             if (waitConfirmation(id, _receiverQueue, _receiverMessages)) {
-                std::cout << "Reception: Order added to kitchen " << id << std::endl;
+                std::cout << "Reception: Order added to kitchen " << id - 1 << "." << std::endl;
                 needNewKitchen = false;
                 break;
             }
-            std::cout << "Reception: Kitchen " << id << " is full" << std::endl;
+            std::cout << "Reception: Kitchen " << id - 1 << " is full." << std::endl;
         }
         if (needNewKitchen) {
             createKitchen();
             sleep(1);
             _kitchenQueues.back().push(pizzaOrder);
-            std::cout << "Reception: Order added to the new kitchen" << std::endl;
+            std::cout << "Reception: Order added to the new kitchen." << std::endl;
         }
     }
 }
@@ -80,7 +82,7 @@ void Plazza::Reception::createKitchen()
     _kitchenQueues.back().reset();
     _kitchenUid++;
 
-    std::cout << "Reception: Creating kitchen" << std::endl;
+    std::cout << "Reception: Creating kitchen." << std::endl;
     int pid = fork();
     if (pid == 0) {
         Kitchen kitchen(_args.getCookNumber(), _args.getRestockTime(), _args.getMultiplier(), _kitchenUid - 1);

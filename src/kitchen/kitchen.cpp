@@ -8,18 +8,21 @@
 #include "kitchen.hpp"
 #include <unistd.h>
 #include <regex>
+#include <unistd.h>
 
 Kitchen::Kitchen(size_t nbCooks, size_t time, double multiplier, size_t id):
     _nbCooks(nbCooks), _timeToRestock(time), _multiplier(multiplier), _id(id), _kitchenQueue((int)id), _receptionQueue(1)
 {
-    //for (size_t i = 0; i < nbCooks; i++) {
-    //    std::shared_ptr<Cook> cook = std::make_shared<Cook>(std::ref(_cooksQueue[i]), multiplier);
-    //    _cooks.push_back(cook);
-    //}
+    _cooksQueue = std::vector<MessageQueueThread<std::string>>(nbCooks);
+    for (size_t i = 0; i < nbCooks; i++) {
+        std::shared_ptr<Cook> cook = std::make_shared<Cook>(std::ref(_cooksQueue[i]), multiplier);
+        _cooks.push_back(cook);
+        usleep(100);
+    }
     _stock = Stock();
     _lastRestock = std::chrono::system_clock::now();
     _startClock = std::chrono::system_clock::time_point();
-    std::cout << "Kitchen " << id << ": created" << std::endl;
+    std::cout << "Kitchen " << id - 1 << ": created." << std::endl;
 }
 
 Kitchen::~Kitchen() {}
@@ -28,7 +31,7 @@ void Kitchen::run()
 {
     while (1) {
         if (!isEnd()) {
-            std::cout << "Kitchen " << _id << ": closed" << std::endl;
+            std::cout << "Kitchen " << _id - 1 << ": closed." << std::endl;
             _receptionQueue.push("Closing" + std::to_string(_id));
             return;
         }
@@ -114,10 +117,10 @@ void Kitchen::handleCommands()
             if (_stock.hasEnoughIngredient(pizza.first)) {
                 _stock.takeIngredient(pizza.first);
                 _waitingCommands.push_back(command);
-                std::cout << "Kitchen " << _id << ": Command " << command << " accepted" << std::endl;
+                std::cout << "Kitchen " << _id - 1 << ": Command " << Plazza::DisplayPizzaName.at(pizza.first) << " " << Plazza::DisplayPizzaSize.at(pizza.second) << " accepted." << std::endl;
                 _receptionQueue.push("COK" + std::to_string(_id));
             } else {
-                std::cout << "Kitchen " << _id << ": Command " << command << " denied" << std::endl;
+                std::cout << "Kitchen " << _id - 1 << ": Command " << Plazza::DisplayPizzaName.at(pizza.first) << " " << Plazza::DisplayPizzaSize.at(pizza.second) << " denied." << std::endl;
                 _receptionQueue.push("CKO" + std::to_string(_id));
             }
         } catch (std::exception &e) {
