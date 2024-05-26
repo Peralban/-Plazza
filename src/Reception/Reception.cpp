@@ -71,9 +71,9 @@ void Plazza::Reception::addOrder(command_t order)
 
     for (int i = 0; i < order.number; i++) {
 
-        for (size_t j = 0; j < _kitchenQueues.size(); j++) {
-            if (!isKitchenAlive(_kitchenQueues[j].getID(), _receiverQueue, _receiverMessages)) {
-                removeKitchen(_kitchenQueues[j].getID());
+        for (auto _kitchenQueue : _kitchenQueues) {
+            if (!isKitchenAlive(_kitchenQueue.getID(), _receiverQueue, _receiverMessages)) {
+                removeKitchen(_kitchenQueue.getID());
                 i--;
             }
         }
@@ -145,7 +145,7 @@ void Plazza::Reception::createKitchen()
 
 static void waitStatus(int id, MessageQueueIPC<std::string> &receiverQueue, std::vector<std::string> &receiverMessages)
 {
-    while (1) {
+    for (int tries = 0; tries < 100; tries++) {
         dumpReceiverQueue(receiverQueue, receiverMessages);
         if (!isKitchenAlive(id, receiverQueue, receiverMessages)) {
             return;
@@ -156,6 +156,7 @@ static void waitStatus(int id, MessageQueueIPC<std::string> &receiverQueue, std:
                 return;
             }
         }
+        usleep(1000);
     }
 }
 

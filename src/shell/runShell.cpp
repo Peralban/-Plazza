@@ -30,7 +30,7 @@ static Plazza::command_t parseOrder(std::string order)
         order = &order[1];
     else
         throw std::runtime_error("Invalid pizza size");
-    if (order[0] == 'x')
+    if (order[0] == 'x' && std::isdigit(order[1]))
         order = &order[1];
     else
         throw std::runtime_error("Invalid pizza number");
