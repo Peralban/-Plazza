@@ -7,8 +7,6 @@
 
 #include "kitchen.hpp"
 #include <unistd.h>
-#include <regex>
-#include <unistd.h>
 
 Kitchen::Kitchen(size_t nbCooks, size_t time, double multiplier, size_t id):
     _nbCooks(nbCooks), _timeToRestock(time), _multiplier(multiplier), _id(id), _kitchenQueue((int)id), _receptionQueue(1)
