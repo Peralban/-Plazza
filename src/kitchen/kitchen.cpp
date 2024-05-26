@@ -27,6 +27,11 @@ Kitchen::~Kitchen() {}
 void Kitchen::run()
 {
     while (1) {
+        if (!isEnd()) {
+            std::cout << "Kitchen " << _id << ": closed" << std::endl;
+            _receptionQueue.push("Closing" + std::to_string(_id));
+            return;
+        }
         std::chrono::system_clock::time_point actualRestock = std::chrono::system_clock::now();
         if (std::chrono::duration_cast<std::chrono::milliseconds>(actualRestock - _lastRestock).count() >= (long int)_timeToRestock) {
             _stock.restock();
@@ -169,7 +174,7 @@ size_t Kitchen::getNbCooksWorking()
     return nb;
 }
 
-bool Kitchen::update()
+bool Kitchen::isEnd()
 {
     size_t workingCooks = getNbCooksWorking();
 

@@ -187,5 +187,5 @@ private:
      * @brief Starts the kitchen.
      * @return true if the kitchen is running, false if the kitchen has to be closed.
      */
-    bool update();
+    bool isEnd();
 };
